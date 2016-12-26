@@ -1,0 +1,10 @@
+[flake8]
+ignore = W191, F403, F405
+max-line-length = 150
+import-order-style = tbm
+exclude =
+	conf.py
+	*_pb2.py
+enable-plugins =
+	builtins
+	import_order
