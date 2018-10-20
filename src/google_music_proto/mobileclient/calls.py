@@ -21,44 +21,55 @@ class ActivityRecordRealtime(MobileClientCall):
 	method = 'POST'
 
 
-# TODO: streamAuthId from stream call headers necessary?
-# @attrs(slots=True)
-# class ActivityRecordPlay(ActivityRecordRealtime):
-# 	song_id = attrib()
-# 	song_duration = attrib()
-#
-# 	def __attrs_post_init__(self):
-# 		super().__attrs_post_init__()
-#
-# 		event_id = str(uuid.uuid1())
-# 		timestamp = int(time.time())
-#
-# 		if self.song_id.startswith('T'):
-# 			track_id = {'metajamCompactKey': self.song_id}
-# 		else:
-# 			track_id = {'lockerId': self.song_id}
-#
-# 		self._data.update({
-# 			'clientTimeMillis': 0,
-# 			'events': [{
-# 				'createdTimestampMillis': timestamp,
-# 				'details': {
-# 					'play': {
-# 						'context': {},
-# 						'isExplicitTrackStart': True,
-# 						'playTimeMillis': self.song_duration,
-# 						'streamAuthId': '',
-# 						'termination': 1,
-# 						'trackDurationMillis': self.song_duration,
-# 						'woodstockPlayDetails': {
-# 							'isWoodstockPlay': False
-# 						}
-# 					}
-# 				},
-# 				'eventId': event_id,
-# 				'trackId': track_id
-# 			}]
-# 		})
+# TODO: Allow configurability of playTimeMillis, streamAuthId, termination?
+@attrs(slots=True)
+class ActivityRecordPlay(ActivityRecordRealtime):
+	"""Record a song play.
+
+	Parameters:
+		song_id (str): A song ID.
+		song_duration (str or int): Song duration in milliseconds.
+
+	Attributes:
+		endpoint: ``activity/recordrealtime``
+		method: ``POST``
+	"""
+
+	song_id = attrib()
+	song_duration = attrib()
+
+	def __attrs_post_init__(self):
+		super().__attrs_post_init__()
+
+		event_id = str(uuid.uuid1())
+		timestamp = int(time.time())
+
+		if self.song_id.startswith('T'):
+			track_id = {'metajamCompactKey': self.song_id}
+		else:
+			track_id = {'lockerId': self.song_id}
+
+		self._data.update({
+			'clientTimeMillis': 0,
+			'events': [{
+				'createdTimestampMillis': timestamp,
+				'details': {
+					'play': {
+						'context': {},
+						'isExplicitTrackStart': True,
+						'playTimeMillis': self.song_duration,
+						'streamAuthId': '',
+						'termination': 1,
+						'trackDurationMillis': self.song_duration,
+						'woodstockPlayDetails': {
+							'isWoodstockPlay': False
+						}
+					}
+				},
+				'eventId': event_id,
+				'trackId': track_id
+			}]
+		})
 
 
 @attrs(slots=True)
