@@ -63,6 +63,17 @@ class ActivityRecordRealtime(MobileClientCall):
 
 @attrs(slots=True)
 class ActivityRecordRate(ActivityRecordRealtime):
+	"""Rate a song.
+
+	Parameters:
+		song_id (str): A song ID.
+		rating (int): 0 (not rated), 1 (thumbs down), or 5 (thumbs up).
+
+	Attributes:
+		endpoint: ``activity/recordrealtime``
+		method: ``POST``
+	"""
+
 	song_id = attrib()
 	rating = attrib()
 
