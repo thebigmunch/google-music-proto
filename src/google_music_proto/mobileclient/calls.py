@@ -1199,14 +1199,14 @@ class RadioStationFeed(MobileClientCall):
 				if 'station_id' in station_info:
 					self._data['stations'].append({
 						'libraryContentOnly': station_info.get('libraryContentOnly', False),
-						'numEntries': station_info.get('num_entries', 100),
+						'numEntries': station_info.get('num_entries', 25),
 						'radioId': station_info['station_id'],
 						'recentlyPlayed': station_info.get('recently_played', [])
 					})
 				elif 'seed' in station_info:
 					self._data['stations'].append({
 						'libraryContentOnly': station_info.get('library_content_only', False),
-						'numEntries': station_info.get('num_entries', 100),
+						'numEntries': station_info.get('num_entries', 25),
 						'seed': station_info['seed'],
 						'recentlyPlayed': station_info.get('recently_played', [])
 					})
