@@ -1138,10 +1138,11 @@ class RadioStation(MobileClientFeedCall):
 	updated_min = attrib(default=-1)
 
 
-# TODO: rz=sc param?
+# TODO: rz=sc/dl param?
 # TODO: libraryContentOnly/recentlyPlayed with no stations?
 # TODO: Make sure all uses of this endpoint are covered.
 # TODO: Instant mixes/shuffle.
+# TODO: IFL.
 @attrs(slots=True)
 class RadioStationFeed(MobileClientCall):
 	"""Generate stations and get tracks from station(s).
