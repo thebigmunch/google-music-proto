@@ -79,7 +79,7 @@ todo_include_todos = True
 # Example configuration for intersphinx: refer to the Python standard library.
 intersphinx_mapping = {
 	'python': ('https://docs.python.org/3', None),
-	'audio_metadata': ('https://audio-metadata.readthedocs.io/en/latest', None),
+	'audio_metadata': ('https://audio-metadata.readthedocs.io/en/stable/', None),
 	'marshmallow': ('https://marshmallow.readthedocs.io/en/latest/', None),
 }
 
