@@ -573,7 +573,7 @@ class ArtistSchema(MobileClientSchema):
 	artist_bio_attribution = fields.Nested(AttributionSchema)
 	kind = fields.Str(required=True, validate=Equal('sj#artist'))
 	name = fields.Str(required=True)
-	related_artists = fields.Nested('self', many=True)
+	related_artists = fields.Nested('ArtistSchema', many=True)
 	topTracks = fields.Nested(StoreTrackSchema, many=True)
 	total_albums = fields.Int()
 
@@ -747,7 +747,7 @@ class PodcastGenreSchema(MobileClientSchema):
 
 	displayName = fields.Str(required=True)
 	id = fields.Str(required=True)
-	subgroups = fields.Nested('self', many=True)
+	subgroups = fields.Nested('PodcastGenreSchema', many=True)
 
 
 class PodcastSeriesUserPreferencesSchema(MobileClientSchema):
@@ -950,7 +950,7 @@ class SituationSchema(MobileClientSchema):
 	description = fields.Str(required=True)
 	id = fields.Str(required=True)
 	imageUrl = fields.Str()
-	situations = fields.Nested('self', many=True)
+	situations = fields.Nested('SituationSchema', many=True)
 	stations = fields.Nested(RadioStationSchema, many=True)
 	title = fields.Str(required=True)
 	wideImageUrl = fields.Str()
@@ -972,7 +972,7 @@ class StationCategorySchema(MobileClientSchema):
 	display_name = fields.Str(required=True)
 	id = fields.Str(required=True)
 	kind = fields.Str(required=True, validate=Equal('sj#stationCategory'))
-	subcategories = fields.Nested('self', many=True)
+	subcategories = fields.Nested('StationCategorySchema', many=True)
 
 
 class TopChartSchema(MobileClientSchema):
