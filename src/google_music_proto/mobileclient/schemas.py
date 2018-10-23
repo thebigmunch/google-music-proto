@@ -897,7 +897,7 @@ class RadioStationSchema(MobileClientSchema):
 	recentTimestamp = fields.Str()
 	seed = fields.Nested(RadioSeedSchema)
 	sessionToken = fields.Str()
-	skipEventHistory = fields.List(fields.Field)  # TODO What's in this array?
+	skipEventHistory = fields.List(fields.Dict)  # TODO What's in this array?
 	stationSeeds = fields.Nested(RadioSeedSchema, many=True)
 	tracks = fields.Nested(TrackSchema, many=True)
 
