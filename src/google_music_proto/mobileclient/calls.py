@@ -559,7 +559,10 @@ class PlaylistBatchDelete(PlaylistBatch):
 	playlist_ids = attrib()
 
 	def __attrs_post_init__(self):
-		mutations = [{'delete': playlist_id} for playlist_id in self.playlist_ids]
+		mutations = [
+			{'delete': playlist_id}
+			for playlist_id in self.playlist_ids
+		]
 
 		super().__attrs_post_init__(mutations)
 
@@ -658,7 +661,10 @@ class PlaylistEntriesShared(MobileClientFeedCall):
 
 	def __attrs_post_init__(self):
 		# TODO: includeDeleted.
-		self._data['entries'] = [{'shareToken': share_token} for share_token in self.share_tokens]
+		self._data['entries'] = [
+			{'shareToken': share_token}
+			for share_token in self.share_tokens
+		]
 
 
 @attrs(slots=True)
@@ -1111,7 +1117,10 @@ class RadioEditStationDelete(RadioEditStation):
 	station_ids = attrib()
 
 	def __attrs_post_init__(self):
-		mutations = [{'delete': station_id} for station_id in self.station_ids]
+		mutations = [
+			{'delete': station_id}
+			for station_id in self.station_ids
+		]
 
 		super().__attrs_post_init__(mutations)
 
@@ -1302,7 +1311,10 @@ class TrackBatchDelete(TrackBatch):
 	track_ids = attrib()
 
 	def __attrs_post_init__(self):
-		mutations = [{'delete': track_id} for track_id in self.track_ids]
+		mutations = [
+			{'delete': track_id}
+			for track_id in self.track_ids
+		]
 
 		super().__attrs_post_init__(mutations)
 

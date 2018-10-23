@@ -37,7 +37,14 @@ def get_album_art(song):
 	if not isinstance(song, audio_metadata.Format):
 		song = audio_metadata.load(song)
 
-	album_art = next((picture.data for picture in song.pictures if picture.type == 3), None)
+	album_art = next(
+		(
+			picture.data
+			for picture in song.pictures
+			if picture.type == 3
+		),
+		None
+	)
 
 	return album_art
 

@@ -25,7 +25,11 @@ class MobileClientSchema(Schema):
 		if not isinstance(data, dict):
 			return
 
-		new_fields = [key for key in data.keys() if key not in self.fields]
+		new_fields = [
+			key
+			for key in data.keys()
+			if key not in self.fields
+		]
 
 		if new_fields:
 			raise ValidationError(f"Unknown fields found: {new_fields}")
