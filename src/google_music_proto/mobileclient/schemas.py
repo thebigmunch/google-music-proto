@@ -1606,9 +1606,6 @@ class SearchResultSchema(MobileClientSchema):
 		{
 			'album': ALBUM,
 			'artist': ARTIST,
-			'best_result': False,
-			'navigational_confidence': 42,
-			'navigational_result': False,
 			'playlist': {k: v for k, v in PLAYLIST.items() if k not in ['creationTimestamp', 'id', 'lastModifiedTimestamp']},
 			'score': 42,
 			'series': PODCAST_SERIES,
@@ -1622,12 +1619,9 @@ class SearchResultSchema(MobileClientSchema):
 
 	album = fields.Nested(AlbumSchema)
 	artist = fields.Nested(ArtistSchema)
-	best_result = fields.Bool()
 	cluster = fields.Nested(SearchResultClusterInfoSchema, many=True)
-	navigational_confidence = fields.Number()
-	navigational_result = fields.Bool()
 	playlist = fields.Nested(PlaylistSchema(exclude=['creationTimestamp', 'id', 'lastModifiedTimestamp']))
-	score = fields.Number()
+	score = fields.Float()
 	series = fields.Nested(PodcastSeriesSchema)
 	situation = fields.Nested(SituationSchema)
 	station = fields.Nested(RadioStationSchema)
