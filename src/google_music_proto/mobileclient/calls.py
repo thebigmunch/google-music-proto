@@ -12,6 +12,7 @@ from .types import QueryResultType, SongRating
 
 # TODO: Calls: increment play count, add songs to playlist, reorder playlist songs, mixes.
 # TODO: plentries, trackstats, playlists/magic.
+# TODO: Situations are now returned through a protobuf call?
 
 
 # TODO: Supports multiple events in one call.
@@ -496,10 +497,13 @@ class ListenNowSituations(MobileClientCall):
 	endpoint = 'listennow/situations'
 	method = 'POST'
 
-	tz_offset = attrib(default=calendar.timegm(time.localtime()) - calendar.timegm(time.gmtime()))
+	tz_offset = attrib(default=None)
 
 	def __attrs_post_init__(self):
 		super().__attrs_post_init__()
+
+		if self.tz_offset is None:
+			self.tz_offset = calendar.timegm(time.localtime()) - calendar.timegm(time.gmtime())
 
 		self._data.update({
 			'requestSignals': {'timeZoneOffsetSecs': self.tz_offset}
