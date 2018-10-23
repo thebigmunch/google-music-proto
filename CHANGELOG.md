@@ -8,6 +8,19 @@ This project adheres to [Semantic Versioning](https://semver.org).
 
 [Commits](https://github.com/thebigmunch/google-music-proto/compare/1.1.0...master)
 
+### Added
+
+* ``ListenNowItemType``.
+
+### Changed
+
+* Update ``SearchResultSchema`` for new response format.
+
+### Fixed
+
+* Fix default for ``numEntries`` in ``RadioStationFeed``.
+* Fix ``tz_offset`` default in ``LibraryNowSituations``.
+
 
 
 ## [1.1.0](https://github.com/thebigmunch/google-music-proto/releases/tag/1.1.0) (2018-10-20)
