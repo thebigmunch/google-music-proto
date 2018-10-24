@@ -10,8 +10,7 @@ from .models import (
 )
 from .types import QueryResultType, SongRating
 
-# TODO: Calls: increment play count, add songs to playlist, reorder playlist songs, mixes.
-# TODO: plentries, trackstats, playlists/magic.
+# TODO: Calls: add songs to playlist, reorder playlist songs, plentries.
 # TODO: Situations are now returned through a protobuf call?
 
 
@@ -307,14 +306,6 @@ class ExploreGenres(MobileClientCall):
 
 		if self.parent_genre_id is not None:
 			self._params.update({'parent-genre-id': self.parent_genre_id})
-
-
-# TODO: Schema.
-# TODO: This doesn't appear to return anything while the ExploreTabs call returns new releases and top charts?
-# @attrs(slots=True)
-# class ExploreNewReleases(MobileClientCall):
-# 	endpoint = 'explore/newreleases'
-# 	method = 'GET'
 
 
 # TODO: 'tabs' param?
@@ -1401,13 +1392,6 @@ class Tracks(MobileClientCall):
 			'max-results': self.max_results,
 			'updated-min': self.updated_min
 		})
-
-
-# TODO: Implement.
-# @attrs(slots=True)
-# class TrackStats(MobileClientCall):
-# 	endpoint = 'trackstats'
-# 	method = 'POST'
 
 
 @attrs(slots=True)
