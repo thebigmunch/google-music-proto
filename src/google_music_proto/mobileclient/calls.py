@@ -1146,7 +1146,6 @@ class RadioStation(MobileClientFeedCall):
 # TODO: libraryContentOnly/recentlyPlayed with no stations?
 # TODO: Make sure all uses of this endpoint are covered.
 # TODO: Instant mixes/shuffle.
-# TODO: IFL.
 @attrs(slots=True)
 class RadioStationFeed(MobileClientCall):
 	"""Generate stations and get tracks from station(s).
@@ -1157,8 +1156,9 @@ class RadioStationFeed(MobileClientCall):
 
 			``station_id`` is a station ID.
 
-			``'seed'`` is a dict containing a seed ID and type.
+			``'seed'`` is a dict containing a seed ID and seed type (``'seedType'``).
 				A seed ID can be: ``artistId``, ``albumId``, ``genreId``, ``trackId`` (store track), ``trackLockerId`` (library track).
+				See :data:`~google_music_proto.mobileclient.types.StationSeedType` for seed type values.
 
 			``num_entries`` is the maximum number of tracks to return from the station.
 
@@ -1201,6 +1201,10 @@ class RadioStationFeed(MobileClientCall):
 			)
 		else:
 			for station_info in self.station_infos:
+				if ('station_id' in station_info) and (station_info['station_id'] == 'IFL'):
+					station_info.pop('station_id')
+					station_info['seed'] = {'seedType': 6}
+
 				if 'station_id' in station_info:
 					self._data['stations'].append({
 						'libraryContentOnly': station_info.get('libraryContentOnly', False),
