@@ -11,6 +11,7 @@ This project adheres to [Semantic Versioning](https://semver.org).
 ### Added
 
 * Support for I'm Feeling Lucky Radio by ``station_id`` set to ``'IFL'``.
+* ``PlaylistsDelete``.
 
 
 ## [1.2.0](https://github.com/thebigmunch/google-music-proto/releases/tag/1.2.0) (2018-10-23)

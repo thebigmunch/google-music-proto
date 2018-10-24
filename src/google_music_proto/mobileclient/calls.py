@@ -763,17 +763,26 @@ class PlaylistsCreate(Playlists):
 		})
 
 
-# TODO: Not sure this exists.
-# @attrs(slots=True)
-# class PlaylistsDelete(Playlists):
-# 	method = 'DELETE'
-#
-# 	playlist_id = attrib()
-#
-# 	def __attrs_post_init__(self):
-# 		super().__attrs_post_init__()
-#
-# 		self._url += f'/{self.playlist_id}'
+@attrs(slots=True)
+class PlaylistsDelete(Playlists):
+	"""Delete a playlist.
+
+	Parameters:
+		playlist_id (str): A playlist ID.
+
+	Attributes:
+		endpoint: ``playlists``
+		method: ``DELETE``
+	"""
+
+	method = 'DELETE'
+
+	playlist_id = attrib()
+
+	def __attrs_post_init__(self):
+		super().__attrs_post_init__()
+
+		self._url += f'/{self.playlist_id}'
 
 
 @attrs(slots=True)
