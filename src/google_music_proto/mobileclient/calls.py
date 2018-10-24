@@ -259,7 +259,12 @@ class DeviceManagementInfoDelete(DeviceManagementInfo):
 
 @attrs(slots=True)
 class EphemeralTop(MobileClientFeedCall):
-	"""Get a listing of promoted tracks.
+	"""Get a listing of 'Thumbs Up' store tracks.
+
+	Note:
+		'Thumbs Up' store tracks are handled client-side.
+		Use the :class:`TrackFeed` call to find library songs
+		with a ``'rating'`` of 5 for 'Thumbs Up'.
 
 	Note:
 		The track list is paged. Getting all tracks will require looping through all pages.
