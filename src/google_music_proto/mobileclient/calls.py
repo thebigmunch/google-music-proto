@@ -1319,7 +1319,10 @@ class TrackBatchUpdate(TrackBatch):
 	"""Edit song(s) in library.
 
 	Note:
-		This previously supported changing most metadata. It now only supports changing ``rating``.
+		This previously supported changing most metadata.
+		It now only supports changing ``rating``.
+		And changing the rating should be done with
+		:class:`ActivityRecordRate` instead.
 
 	Attributes:
 		endpoint: ``trackbatch``
@@ -1372,6 +1375,7 @@ class Tracks(MobileClientCall):
 		max_results (int, Optional): The maximum number of results on returned page. Max allowed is ``49995``.
 			Default: ``1000``
 		start_token (str, Optional): The token of the page to return. Default: ``None`` to get first page.
+		updated_min (int, Optional): List changes since the given Unix epoch time in microseconds.
 
 	Attributes:
 		endpoint: ``tracks``
