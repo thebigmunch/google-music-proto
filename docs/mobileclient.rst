@@ -54,15 +54,6 @@ Classes
 
 Classes representing calls to the Google Music mobile client API.
 
-Example of making an HTTP request using the `requests <http://docs.python-requests.org>`_ library::
-
-	# Assuming an authenticated session called 'session'.
-	>>> call = TrackFeed()
-	>>> response = session.request(
-			call.method, call.url, params=call.params, headers=call.headers,
-			data=call.body, allow_redirects=call.follow_redirects
-		)
-
 .. automodule:: google_music_proto.mobileclient.calls
 	:members:
 
@@ -73,7 +64,7 @@ Schemas
 Classes representing schemas to validate Google Music mobile client responses.
 
 All mobile client schemas are a subclass of :class:`marshmallow.Schema` with the ``strict`` option set to ``True``.
-Unknown fields trigger a :exc:`marshmallow.ValidationError <marshmallow.exceptions.ValidationError>`.
+Unknown fields trigger a :exc:`marshmallow.ValidationError <marshmallow.exceptions.ValidationError>` exception.
 
 .. automodule:: google_music_proto.mobileclient.schemas
 	:members:
