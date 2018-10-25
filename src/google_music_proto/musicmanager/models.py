@@ -34,7 +34,7 @@ class MusicManagerCall(Call):
 		try:
 			res_body = self.response_type()
 			res_body.ParseFromString(response_body)
-		except DecodeError as e:
+		except DecodeError:
 			raise
 
 		if not self.check_success(res_body):

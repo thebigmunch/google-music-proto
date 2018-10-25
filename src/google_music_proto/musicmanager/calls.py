@@ -335,7 +335,7 @@ class Sample(MusicManagerCall):
 				album_art_image = upload_pb2.ImageUnion()
 				album_art_image.user_album_art = album_art
 				track_sample.user_album_art.CopyFrom(album_art_image)
-		except (OSError, ValueError, subprocess.CalledProcessError) as e:
+		except (OSError, ValueError, subprocess.CalledProcessError):
 			raise
 
 		return track_sample
