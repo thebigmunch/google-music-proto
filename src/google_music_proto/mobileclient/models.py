@@ -16,25 +16,6 @@ from .constants import API_URL, STREAM_URL
 from ..models import Call, JSONCall
 
 
-class MobileClientSchema(Schema):
-	class Meta:
-		strict = True
-
-	@pre_load
-	def check_for_unknown_fields(self, data):
-		if not isinstance(data, dict):
-			return
-
-		new_fields = [
-			key
-			for key in data.keys()
-			if key not in self.fields
-		]
-
-		if new_fields:
-			raise ValidationError(f"Unknown fields found: {new_fields}")
-
-
 @attrs(slots=True)
 class MobileClientCall(JSONCall):
 	base_url = API_URL
@@ -138,3 +119,22 @@ class MobileClientStreamCall(Call):
 			'sig': _sig,
 			'slt': _salt
 		})
+
+
+class MobileClientSchema(Schema):
+	class Meta:
+		strict = True
+
+	@pre_load
+	def check_for_unknown_fields(self, data):
+		if not isinstance(data, dict):
+			return
+
+		new_fields = [
+			key
+			for key in data.keys()
+			if key not in self.fields
+		]
+
+		if new_fields:
+			raise ValidationError(f"Unknown fields found: {new_fields}")

@@ -1,14 +1,9 @@
-==================
-google-music-proto
-==================
-
-
-google-music-proto is a `sans-I/O <https://sans-io.readthedocs.io/>`_
-library for interacting with Google Music.
+google-music-proto --- A `sans-I/O <https://sans-io.readthedocs.io/>`_ Google Music API library
+===============================================================================================
 
 
 Getting Started
-===============
+---------------
 
 Install google-music-proto with `pip <https://pip.pypa.io/en/stable/>`_.
 
@@ -18,10 +13,14 @@ Install google-music-proto with `pip <https://pip.pypa.io/en/stable/>`_.
 
 
 API Reference
-=============
+-------------
 
 .. toctree::
-	:maxdepth: 1
+	:titlesonly:
 
-	mobileclient
-	musicmanager
+	mobileclient/models
+	mobileclient/calls
+	mobileclient/schemas
+	mobileclient/types
+	musicmanager/models
+	musicmanager/calls

@@ -5,6 +5,8 @@ from enum import Enum, unique
 
 @unique
 class ListenNowItemType(Enum):
+	"""Listen Now item type."""
+
 	album = 1
 	station = 3
 
@@ -51,7 +53,12 @@ class StationSeedType(Enum):
 
 @unique
 class TrackRating(Enum):
-	"""Track ratings."""
+	"""Track ratings.
+
+	::
+
+		song['rating']
+	"""
 
 	NOT_RATED = 0
 	ONE_STAR = 1

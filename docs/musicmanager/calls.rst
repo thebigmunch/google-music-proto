@@ -1,25 +1,18 @@
-.. _musicmanager:
+:mod:`musicmanager.calls <google_music_proto.musicmanager.calls>` --- Music Manager API call classes
+====================================================================================================
 
-.. currentmodule:: google_music_proto.musicmanager.calls
-
-=============
-Music Manager
-=============
-
-Classes representing calls for the Google Music music manager API.
+.. module:: google_music_proto.musicmanager.calls
 
 Example of making an HTTP request using the `requests <http://docs.python-requests.org>`_ library::
 
-	# Assuming an authenticated session called 'session'.
-	>>> call = ExportIds(<uploader_id>)
-	>>> response = session.request(
-			call.method, call.url, params=call.params, headers=call.headers,
-			data=call.body, allow_redirects=call.follow_redirects
-		)
+    # Assuming an authenticated session called 'session'.
+    >>> from google_music_proto.musicmanager.calls import ExportIds
+    >>> call = ExportIds(<uploader_id>)
+    >>> response = session.request(
+            call.method, call.url, params=call.params, headers=call.headers,
+            data=call.body, allow_redirects=call.follow_redirects
+        )
 
-
-Calls
-=====
 
 Attributes
 ----------
