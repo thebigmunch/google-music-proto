@@ -1078,7 +1078,11 @@ class Query(MobileClientCall):
 
 @attrs(slots=True)
 class QuerySuggestion(MobileClientCall):
-	__slots__ = ()
+	"""Get a search suggestion.
+
+	Parameters:
+		query (str): Search text.
+	"""
 
 	endpoint = 'querysuggestion'
 	method = 'POST'
