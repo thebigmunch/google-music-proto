@@ -8,7 +8,7 @@ from .models import (
 	MobileClientBatchCall, MobileClientCall, MobileClientFeedCall,
 	MobileClientFetchCall, MobileClientStreamCall
 )
-from .types import QueryResultType, SongRating
+from .types import QueryResultType, TrackRating
 
 # TODO: Calls: add songs to playlist, reorder playlist songs, plentries.
 # TODO: Situations are now returned through a protobuf call?
@@ -263,7 +263,7 @@ class EphemeralTop(MobileClientFeedCall):
 
 	Note:
 		'Thumbs Up' store tracks are handled client-side.
-		Use the :class:`TrackFeed` call to find library songs
+		Use the :class:`TrackFeed` call to find library tracks
 		with a ``'rating'`` of 5 for 'Thumbs Up'.
 
 	Note:
@@ -290,7 +290,7 @@ class EphemeralTop(MobileClientFeedCall):
 
 @attrs(slots=True)
 class ExploreGenres(MobileClientCall):
-	"""Get a listing of song genres.
+	"""Get a listing of track genres.
 
 	Parameters:
 		parent_genre_id (str): A genre ID. If given, a listing of this genre's sub-genres is returned.
@@ -606,7 +606,7 @@ class PlaylistBatchUpdate(PlaylistBatch):
 # 		method: ``POST``
 # 	"""
 #
-# 	song_ids = attrib()
+# 	track_ids = attrib()
 #
 # 	def __attrs_post_init__(self):
 # 		pass
@@ -621,10 +621,10 @@ class PlaylistBatchUpdate(PlaylistBatch):
 # 		method: ``POST``
 # 	"""
 #
-# 	song_ids = attrib()
+# 	track_ids = attrib()
 #
 # 	def __attrs_post_init__(self):
-# 		mutations = [{'delete': song_id} for song_id in self.song_ids]
+# 		mutations = [{'delete': track_id} for track_id in self.track_ids]
 #
 # 		super().__attrs_post_init__(mutations)
 
@@ -1249,8 +1249,8 @@ class RadioStationTrackStreamURL(MobileClientStreamCall):
 		Unlike the other stream calls, this returns JSON with a 'url' key, not the location in headers.
 
 	Parameters:
-		song_id (str): A station song ID.
-		wentry_id (str): The ``wentryid`` from a station song dict.
+		track_id (str): A station track ID.
+		wentry_id (str): The ``wentryid`` from a station track dict.
 		session_token (str): The ``sessionToken`` from a :class:`RadioStationFeed` response.
 		quality (str, Optional): Stream quality is one of ``'hi'`` (320Kbps), ``'med'`` (160Kbps), or ``'low'`` (128Kbps).
 			Default: ``'hi'``
@@ -1259,88 +1259,36 @@ class RadioStationTrackStreamURL(MobileClientStreamCall):
 
 	endpoint = 'wplay'
 
-	song_id = attrib()
+	track_id = attrib()
 	wentry_id = attrib()
 	session_token = attrib()
 	quality = attrib(default='hi')
 	device_id = attrib(default=None)
 
 	def __attrs_post_init__(self):
-		super().__attrs_post_init__(self.song_id, quality=self.quality, device_id=self.device_id)
+		super().__attrs_post_init__(self.track_id, quality=self.quality, device_id=self.device_id)
 
 		del self._headers['X-Device-ID']  #
 
 		self._params['sesstok'] = self.session_token
 		self._params['wentryid'] = self.wentry_id
 
-		if self.song_id.startswith('T'):
-			self._params['mjck'] = self.song_id
+		if self.track_id.startswith('T'):
+			self._params['mjck'] = self.track_id
 		else:
-			self._params['songid'] = self.song_id
+			self._params['songid'] = self.track_id
 
 
 @attrs(slots=True)
 class TrackBatch(MobileClientBatchCall):
-	endpoint = 'trackbatch'
-
-
-@attrs(slots=True)
-class TrackBatchCreate(TrackBatch):
-	"""Add store song(s) to library.
-
-	Attributes:
-		endpoint: ``trackbatch``
-		method: ``POST``
-		schema: :class:`~google_music_proto.mobileclient.schemas.TrackBatchSchema`
-	"""
-
-	store_songs = attrib()
-
-	def __attrs_post_init__(self):
-		mutations = []
-
-		for song in self.store_songs:
-			# TODO: What are the track types?
-			song['trackType'] = 8
-
-			mutations.append({'create': song})
-
-		super().__attrs_post_init__(mutations)
-
-
-@attrs(slots=True)
-class TrackBatchDelete(TrackBatch):
-	"""Delete song(s) from library.
-
-	Parameters:
-		song_ids (list): A list of song IDs.
-
-	Attributes:
-		endpoint: ``trackbatch``
-		method: ``POST``
-		schema: :class:`~google_music_proto.mobileclient.schemas.TrackBatchSchema`
-	"""
-
-	track_ids = attrib()
-
-	def __attrs_post_init__(self):
-		mutations = [
-			{'delete': track_id}
-			for track_id in self.track_ids
-		]
-
-		super().__attrs_post_init__(mutations)
-
-
-@attrs(slots=True)
-class TrackBatchUpdate(TrackBatch):
-	"""Edit song(s) in library.
+	"""Add, delete, and edit library tracks.
 
 	Note:
-		This previously supported changing most metadata.
+		This previously supported editing most metadata.
 		It now only supports changing ``rating``.
-		And changing the rating should be done with
-		:class:`ActivityRecordRate` instead.
+		Changing the rating should be done with
+		:class:`ActivityRecord` and :meth:`ActivityRecord.rate`
+		instead of :meth:`TrackBatch.edit`.
 
 	Attributes:
 		endpoint: ``trackbatch``
@@ -1426,22 +1374,22 @@ class TrackStreamURL(MobileClientStreamCall):
 
 	Parameters:
 		device_id (str): A mobile device ID.
-		song_id (str): A library or store song ID.
-			A Google Music subscription is required to stream store songs.
+		track_id (str): A library or store track ID.
+			A Google Music subscription is required to stream store tracks.
 		quality (str, Optional): Stream quality is one of ``'hi'`` (320Kbps), ``'med'`` (160Kbps), or ``'low'`` (128Kbps).
 			Default: ``'hi'``
 	"""
 
 	endpoint = 'mplay'
 
-	song_id = attrib()
+	track_id = attrib()
 	quality = attrib(default='hi')
 	device_id = attrib(default=None)
 
 	def __attrs_post_init__(self):
-		super().__attrs_post_init__(self.song_id, quality=self.quality, device_id=self.device_id)
+		super().__attrs_post_init__(self.track_id, quality=self.quality, device_id=self.device_id)
 
-		if self.song_id.startswith('T'):
-			self._params['mjck'] = self.song_id
+		if self.track_id.startswith('T'):
+			self._params['mjck'] = self.track_id
 		else:
-			self._params['songid'] = self.song_id
+			self._params['songid'] = self.track_id

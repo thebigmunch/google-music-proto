@@ -1,4 +1,4 @@
-__all__ = ['ListenNowItemType', 'QueryResultType', 'SongRating', 'StationSeedType']
+__all__ = ['ListenNowItemType', 'QueryResultType', 'StationSeedType', 'TrackRating']
 
 from enum import Enum, unique
 
@@ -30,15 +30,6 @@ class QueryResultType(Enum):
 
 
 @unique
-class SongRating(Enum):
-	"""Song ratings."""
-
-	NOT_RATED = 0
-	ONE_STAR = 1
-	FIVE_STARS = 5
-
-
-@unique
 class StationSeedType(Enum):
 	"""Station seed types.
 
@@ -56,3 +47,12 @@ class StationSeedType(Enum):
 	artist_only = 7
 	playlist = 8
 	curated_station = 9
+
+
+@unique
+class TrackRating(Enum):
+	"""Track ratings."""
+
+	NOT_RATED = 0
+	ONE_STAR = 1
+	FIVE_STARS = 5
