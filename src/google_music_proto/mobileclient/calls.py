@@ -10,109 +10,105 @@ from .models import (
 )
 from .types import QueryResultType, TrackRating
 
+# TODO: Batch call schemas.
 # TODO: Calls: add songs to playlist, reorder playlist songs, plentries.
 # TODO: Situations are now returned through a protobuf call?
 
 
-# TODO: Supports multiple events in one call.
 @attrs(slots=True)
-class ActivityRecordRealtime(MobileClientCall):
+class ActivityRecordRealtime(MobileClientBatchCall):
+	"""Record track play and rate events.
+
+	Use :meth:`play` to build track play event dicts.
+	Use :meth:`rate` to build track rate events dicts.
+
+	Parameters:
+		events (list or dict): A list of event dicts or a single event dict.
+
+	Attributes:
+		endpoint: ``activity/recordrealtime``
+		method: ``POST``
+	"""
+
 	endpoint = 'activity/recordrealtime'
 	method = 'POST'
+	batch_key = 'events'
 
+	# TODO: termination?
+	@staticmethod
+	def play(track_id, track_duration, *, play_time=None, stream_auth_id=None):
+		"""Build a track play event.
 
-# TODO: Allow configurability of playTimeMillis, streamAuthId, termination?
-@attrs(slots=True)
-class ActivityRecordPlay(ActivityRecordRealtime):
-	"""Record a song play.
+		Parameters:
+			track_id (str): A track ID.
+			track_duration (int or str): The duration of the track.
+			play_time (int, Optional): The amount of time user played the track in seconds.
+				Default: ``track_duration``
+			stream_auth_id (str, Optional): The stream auth ID from a stream call's headers.
 
-	Parameters:
-		song_id (str): A song ID.
-		song_duration (str or int): Song duration in milliseconds.
+		Returns:
+			dict: An event dict.
+		"""
 
-	Attributes:
-		endpoint: ``activity/recordrealtime``
-		method: ``POST``
-	"""
+		event_id = str(uuid.uuid1())
+		timestamp = int(time.time())
+		play_time = track_duration if play_time is None else play_time * 1000
 
-	song_id = attrib()
-	song_duration = attrib()
+		if track_id.startswith('T'):
+			track = {'metajamCompactKey': track_id}
+		else:
+			track = {'lockerId': track_id}
 
-	def __attrs_post_init__(self):
-		super().__attrs_post_init__()
+		return {
+			'createdTimestampMillis': timestamp,
+			'details': {
+				'play': {
+					'context': {},
+					'isExplicitTrackStart': True,
+					'playTimeMillis': play_time,
+					'streamAuthId': stream_auth_id or '',
+					'termination': 1,
+					'trackDurationMillis': track_duration,
+					'woodstockPlayDetails': {
+						'isWoodstockPlay': False
+					}
+				}
+			},
+			'eventId': event_id,
+			'trackId': track
+		}
+
+	@staticmethod
+	def rate(track_id, rating):
+		"""Build a track rate event.
+
+		Parameters:
+			track_id (str): A track ID.
+			rating (int): 0 (not rated), 1 (thumbs down), or 5 (thumbs up).
+
+		Returns:
+			dict: An event dict.
+		"""
 
 		event_id = str(uuid.uuid1())
 		timestamp = int(time.time())
 
-		if self.song_id.startswith('T'):
-			track_id = {'metajamCompactKey': self.song_id}
+		if track_id.startswith('T'):
+			track = {'metajamCompactKey': track_id}
 		else:
-			track_id = {'lockerId': self.song_id}
+			track = {'lockerId': track_id}
 
-		self._data.update({
-			'clientTimeMillis': 0,
-			'events': [{
-				'createdTimestampMillis': timestamp,
-				'details': {
-					'play': {
-						'context': {},
-						'isExplicitTrackStart': True,
-						'playTimeMillis': self.song_duration,
-						'streamAuthId': '',
-						'termination': 1,
-						'trackDurationMillis': self.song_duration,
-						'woodstockPlayDetails': {
-							'isWoodstockPlay': False
-						}
-					}
-				},
-				'eventId': event_id,
-				'trackId': track_id
-			}]
-		})
-
-
-@attrs(slots=True)
-class ActivityRecordRate(ActivityRecordRealtime):
-	"""Rate a song.
-
-	Parameters:
-		song_id (str): A song ID.
-		rating (int): 0 (not rated), 1 (thumbs down), or 5 (thumbs up).
-
-	Attributes:
-		endpoint: ``activity/recordrealtime``
-		method: ``POST``
-	"""
-
-	song_id = attrib()
-	rating = attrib()
-
-	def __attrs_post_init__(self):
-		super().__attrs_post_init__()
-
-		event_id = str(uuid.uuid1())
-		timestamp = int(time.time())
-
-		if self.song_id.startswith('T'):
-			track_id = {'metajamCompactKey': self.song_id}
-		else:
-			track_id = {'lockerId': self.song_id}
-
-		self._data.update({
-			'clientTimeMillis': 0,
-			'events': [{
-				'createdTimestampMillis': timestamp,
-				'details': {
-					'rating': {
-						'context': {},
-						'rating': SongRating(self.rating).name
-					}
-				},
-				'eventId': event_id,
-				'trackId': track_id
-			}]
-		})
+		return {
+			'createdTimestampMillis': timestamp,
+			'details': {
+				'rating': {
+					'context': {},
+					'rating': TrackRating(rating).name
+				}
+			},
+			'eventId': event_id,
+			'trackId': track
+		}
 
 
 @attrs(slots=True)
@@ -508,86 +504,85 @@ class ListenNowSituations(MobileClientCall):
 
 @attrs(slots=True)
 class PlaylistBatch(MobileClientBatchCall):
+	"""Create, delete, and edit playlists.
+
+	Use :meth:`create` to build playlist creation mutation dicts.
+	Use :meth:`delete` to build playlist delete mutation dicts.
+	Use :meth:`edit` to build playlist edit mutation dicts.
+
+	Parameters:
+		mutations (list or dict): A list of mutation dicts or a single mutation dict.
+
+	Attributes:
+		endpoint: ``playlistbatch``
+		method: ``POST``
+	"""
+
 	endpoint = 'playlistbatch'
 
+	@staticmethod
+	def create(name, description, share_state):
+		"""Build a playlist create event.
 
-@attrs(slots=True)
-class PlaylistBatchCreate(PlaylistBatch):
-	"""Create playlist(s).
+		Parameters:
+			name (str): Name to give the playlist.
+			description (str): Description to give the playlist.
+			make_public (bool): If ``True`` and account has a subscription, make playlist public.
+				Default: ``False``
 
-	Attributes:
-		endpoint: ``playlistbatch``
-		method: ``POST``
-	"""
+		Returns:
+			dict: A mutation dict.
+		"""
 
-	playlist_infos = attrib()
-
-	def __attrs_post_init__(self):
 		timestamp = int(time.time() * 1000000)
 
-		mutations = []
+		return {
+			'create': {
+				'creationTimestamp': timestamp,
+				'deleted': False,
+				'description': description,
+				'lastModifiedTimestamp': timestamp,
+				'name': name,
+				'shareState': share_state,
+				'type': 'USER_GENERATED'
+			}
+		}
 
-		for name, description, share_state in self.playlist_infos:
-			mutations.append({
-				'create': {
-					'creationTimestamp': timestamp,
-					'deleted': False,
-					'description': description,
-					'lastModifiedTimestamp': timestamp,
-					'name': name,
-					'shareState': share_state,
-					'type': 'USER_GENERATED'
-				}
-			})
+	@staticmethod
+	def delete(playlist_id):
+		"""Build a playlist delete event.
 
-		super().__attrs_post_init__(mutations)
+		Parameters:
+			playlist_id (str): A playlist ID.
 
+		Returns:
+			dict: A mutation dict.
+		"""
 
-@attrs(slots=True)
-class PlaylistBatchDelete(PlaylistBatch):
-	"""Delete playlist(s).
+		return {'delete': playlist_id}
 
-	Attributes:
-		endpoint: ``playlistbatch``
-		method: ``POST``
-	"""
+	@staticmethod
+	def edit(playlist_id, name, description, share_state):
+		"""Build a playlist edit event.
 
-	playlist_ids = attrib()
+		Parameters:
+			playlist_id (str): A playlist ID.
+			name (str): Name to give the playlist.
+			description (str): Description to give the playlist.
+			make_public (bool): If ``True`` and account has a subscription, make playlist public.
 
-	def __attrs_post_init__(self):
-		mutations = [
-			{'delete': playlist_id}
-			for playlist_id in self.playlist_ids
-		]
+		Returns:
+			dict: A mutation dict.
+		"""
 
-		super().__attrs_post_init__(mutations)
-
-
-@attrs(slots=True)
-class PlaylistBatchUpdate(PlaylistBatch):
-	"""Edit playlist(s).
-
-	Attributes:
-		endpoint: ``playlistbatch``
-		method: ``POST``
-	"""
-
-	playlist_edits = attrib()
-
-	def __attrs_post_init__(self):
-		mutations = []
-
-		for playlist_id, name, description, share_state in self.playlist_edits:
-			mutations.append({
-				'update': {
-					'description': description,
-					'id': playlist_id,
-					'name': name,
-					'shareState': share_state
-				}
-			})
-
-		super().__attrs_post_init__(mutations)
+		return {
+			'update': {
+				'description': description,
+				'id': playlist_id,
+				'name': name,
+				'shareState': share_state
+			}
+		}
 
 
 # TODO
@@ -1018,6 +1013,7 @@ class PodcastSeries(MobileClientCall):
 		})
 
 
+# TODO: Implement.
 @attrs(slots=True)
 class PodcastSeriesBatchMutate(MobileClientBatchCall):
 	"""
@@ -1029,10 +1025,13 @@ class PodcastSeriesBatchMutate(MobileClientBatchCall):
 
 	endpoint = 'podcastseries/batchmutate'
 
-	updates = attrib()
+	@staticmethod
+	def add():
+		pass
 
-	def __attrs_post_init__(self, updates):
-		super().__attrs_post_init__(updates)
+	@staticmethod
+	def delete():
+		pass
 
 
 # TODO: **kwargs with attrs.
@@ -1095,43 +1094,22 @@ class QuerySuggestion(MobileClientCall):
 		self._data.update({'query': self.query})
 
 
+# TODO: Implement.
 @attrs(slots=True)
 class RadioEditStation(MobileClientBatchCall):
 	endpoint = 'radio/editstation'
 
+	@staticmethod
+	def add():
+		pass
 
-# TODO: Implement.
-@attrs(slots=True)
-class RadioEditStationCreateOrGet(RadioEditStation):
-	"""Create a radio station.
+	@staticmethod
+	def delete(station_id):
+		return {'delete': station_id}
 
-	Attributes:
-		endpoint: ``radio/editstation``
-		method: ``POST``
-	"""
-
-	def __init__(self, mutations):
-		super().__init__(mutations)
-
-
-@attrs(slots=True)
-class RadioEditStationDelete(RadioEditStation):
-	"""Delete a radio station.
-
-	Attributes:
-		endpoint: ``radio/editstation``
-		method: ``POST``
-	"""
-
-	station_ids = attrib()
-
-	def __attrs_post_init__(self):
-		mutations = [
-			{'delete': station_id}
-			for station_id in self.station_ids
-		]
-
-		super().__attrs_post_init__(mutations)
+	@staticmethod
+	def get():
+		pass
 
 
 @attrs(slots=True)
@@ -1286,9 +1264,15 @@ class TrackBatch(MobileClientBatchCall):
 	Note:
 		This previously supported editing most metadata.
 		It now only supports changing ``rating``.
-		Changing the rating should be done with
-		:class:`ActivityRecord` and :meth:`ActivityRecord.rate`
-		instead of :meth:`TrackBatch.edit`.
+		However, changing the rating should be done with
+		:class:`ActivityRecord` and :meth:`ActivityRecord.rate` instead.
+
+	Use :meth:`add` to build track add mutation dicts.
+	Use :meth:`delete` to build track delete mutation dicts.
+	Use :meth:`edit` to build track edit mutation dicts.
+
+	Parameters:
+		mutations (list or dict): A list of mutation dicts or a single mutation dict.
 
 	Attributes:
 		endpoint: ``trackbatch``
@@ -1296,12 +1280,48 @@ class TrackBatch(MobileClientBatchCall):
 		schema: :class:`~google_music_proto.mobileclient.schemas.TrackBatchSchema`
 	"""
 
-	track_edits = attrib()
+	endpoint = 'trackbatch'
 
-	def __attrs_post_init__(self):
-		mutations = self.track_edits
+	@staticmethod
+	def add(store_track):
+		"""Build a track add event.
 
-		super().__attrs_post_init__(mutations)
+		Parameters:
+			store_track (dict): A store track dict.
+
+		Returns:
+			dict: A mutation dict.
+		"""
+
+		store_track['trackType'] = 8
+
+		return {'create': store_track}
+
+	@staticmethod
+	def delete(track_id):
+		"""Build a track add event.
+
+		Parameters:
+			track_id (str): A track ID.
+
+		Returns:
+			dict: A mutation dict.
+		"""
+
+		return {'delete': track_id}
+
+	@staticmethod
+	def edit(track):
+		"""Build a track edit event.
+
+		Parameters:
+			track (dict): A library track dict.
+
+		Returns:
+			dict: A mutation dict.
+		"""
+
+		return track
 
 
 @attrs(slots=True)

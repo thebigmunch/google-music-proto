@@ -38,11 +38,17 @@ class MobileClientCall(JSONCall):
 @attrs(slots=True)
 class MobileClientBatchCall(MobileClientCall):
 	method = 'POST'
+	batch_key = 'mutations'
 
-	def __attrs_post_init__(self, mutations):
+	events_or_mutations = attrib()
+
+	def __attrs_post_init__(self):
 		super().__attrs_post_init__()
 
-		self._data.update({'mutations': mutations})
+		if not isinstance(self.events_or_mutations, list):
+			self.events_or_mutations = [self.events_or_mutations]
+
+		self._data.update({self.batch_key: self.events_or_mutations})
 
 
 @attrs(slots=True)
