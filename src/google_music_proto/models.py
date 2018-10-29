@@ -10,7 +10,7 @@ class ParsedResponse:
 
 
 @attrs(slots=True)
-class Call():
+class Call:
 	follow_redirects = False
 
 	_data = attrib(default=b'', init=False)
