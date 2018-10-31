@@ -11,7 +11,8 @@ library for interacting with Google Music.
 
 ## Usage
 
-See the [docs](https://google-music-proto.readthedocs.io).
+For the release version, see the [stable docs](https://google-music-proto.readthedocs.io/en/stable/).  
+For the development version, see the [latest docs](https://google-music-proto.readthedocs.io/en/latest/).
 
 
 ## Appreciation
