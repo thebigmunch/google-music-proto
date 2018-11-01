@@ -1,5 +1,7 @@
 # google-music-proto
 
+[![Read the Docs](https://img.shields.io/readthedocs/google-music-proto.svg)](https://google-music-proto.readthedocs.io)
+
 [google-music-proto](https://github.com/thebigmunch/google-music-proto) is a [sans-I/O](https://sans-io.readthedocs.io/)
 library for interacting with Google Music.
 
