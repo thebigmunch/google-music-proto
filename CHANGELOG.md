@@ -6,7 +6,13 @@ This project adheres to [Semantic Versioning](https://semver.org).
 
 ## [Unreleased](https://github.com/thebigmunch/google-music-proto/tree/master)
 
-[Commits](https://github.com/thebigmunch/google-music-proto/compare/1.3.0...master)
+[Commits](https://github.com/thebigmunch/google-music-proto/compare/2.0.0...master)
+
+
+
+## [2.0.0](https://github.com/thebigmunch/google-music-proto/releases/tag/2.0.0) (2018-11-05)
+
+[Commits](https://github.com/thebigmunch/google-music-proto/compare/1.3.0...2.0.0)
 
 ### Added
 
@@ -21,7 +27,7 @@ This project adheres to [Semantic Versioning](https://semver.org).
 * Batch calls now use staticmethods to build the events/mutations.
   See the docs for each call's methods.
   The events/mutations are passed to the batch call class.
-  This allows for different types of operations to be done in one call.
+  This allows for multiple and different types of and operations to be done in one call.
 
 ### Removed
 
@@ -36,8 +42,6 @@ This project adheres to [Semantic Versioning](https://semver.org).
 	* ``TrackBatchCreate``
 	* ``TrackBatchDelete``
 	* ``TrackBatchUpdate``
-
-
 
 
 ## [1.3.0](https://github.com/thebigmunch/google-music-proto/releases/tag/1.2.0) (2018-10-25)
