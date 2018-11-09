@@ -585,43 +585,107 @@ class PlaylistBatch(MobileClientBatchCall):
 		}
 
 
-# TODO
-# @attrs(slots=True)
-# class PlaylistEntriesBatch(MobileClientBatchCall):
-# 	endpoint = 'plentriesbatch'
-#
-#
-# # TODO: Necessary keys in json?
-# @attrs(slots=True)
-# class PlaylistEntriesBatchAdd(PlaylistEntriesBatch):
-# 	"""
-#
-# 	Attributes:
-# 		endpoint: ``plentriesbatch``
-# 		method: ``POST``
-# 	"""
-#
-# 	track_ids = attrib()
-#
-# 	def __attrs_post_init__(self):
-# 		pass
-#
-#
-# @attrs(slots=True)
-# class PlaylistEntriesBatchDelete(PlaylistEntriesBatch):
-# 	"""Delete playlist entries.
-#
-# 	Attributes:
-# 		endpoint: ``plentriesbatch``
-# 		method: ``POST``
-# 	"""
-#
-# 	track_ids = attrib()
-#
-# 	def __attrs_post_init__(self):
-# 		mutations = [{'delete': track_id} for track_id in self.track_ids]
-#
-# 		super().__attrs_post_init__(mutations)
+@attrs(slots=True)
+class PlaylistEntriesBatch(MobileClientBatchCall):
+	"""Create, delete, and edit playlist entries.
+
+	Use :meth:`create` to build playlist entry creation mutation dicts.
+	Use :meth:`delete` to build playlist entry delete mutation dicts.
+	Use :meth:`update` to build playlist entry update mutation dicts.
+
+	Parameters:
+		mutations (list or dict): A list of mutation dicts or a single mutation dict.
+
+	Attributes:
+		endpoint: ``plentriesbatch``
+		method: ``POST``
+	"""
+
+	endpoint = 'plentriesbatch'
+
+	@staticmethod
+	def create(track_id, playlist_id, *, playlist_entry_id=None, preceding_entry_id=None, following_entry_id=None):
+		"""Build a playlist entry create event.
+
+		Note:
+
+
+		Parameters:
+			track_id (str): A track ID.
+			playlist_id (str): A playlist ID.
+			playlist_entry_id (str, Optional): A playlist entry ID to
+				assign to the created entry.
+				Default: Automatically generated.
+			preceding_entry_id (str, Optional): The playlist entry ID
+				that should precede the added track.
+			following_entry_id (str, Optional): The playlist entry ID
+				that should follow the added track.
+
+		Returns:
+			dict: A mutation dict.
+		"""
+
+		mutation = {
+			'create': {
+				'clientId': playlist_entry_id or str(uuid.uuid1()),
+				'creationTimestamp': '-1',
+				'deleted': False,
+				'lastModifiedTimestamp': '0',
+				'playlistId': playlist_id,
+				'source': 2 if track_id.startswith('T') else 1,
+				'trackId': track_id
+			}
+		}
+
+		if preceding_entry_id is not None:
+			mutation['create']['precedingEntryId'] = preceding_entry_id
+
+		if following_entry_id is not None:
+			mutation['create']['followingEntryId'] = following_entry_id
+
+		return mutation
+
+	@staticmethod
+	def delete(playlist_entry_id):
+		"""Build a playlist entry delete event.
+
+		Parameters:
+			playlist_entry_id (str): A playlist entryID.
+
+		Returns:
+			dict: A mutation dict.
+		"""
+
+		return {'delete': playlist_entry_id}
+
+	@staticmethod
+	def update(playlist_entry, *, preceding_entry_id=None, following_entry_id=None):
+		"""Build a playlist entry update event.
+
+		Parameters:
+			playlist_id (str): A playlist ID.
+
+		Returns:
+			dict: A mutation dict.
+		"""
+
+		keys = {
+			'clientId', 'deleted', 'id', 'lastModifiedTimestamp',
+			'playlistId', 'source', 'trackId'
+		}
+
+		entry = {k: v for k, v in playlist_entry.items() if k in keys}
+		entry['creationTimestamp'] = -1
+
+		if preceding_entry_id is not None:
+			entry['precedingEntryId'] = preceding_entry_id
+
+		if following_entry_id is not None:
+			entry['followingEntryId'] = following_entry_id
+
+		mutation = {'update': entry}
+
+		return mutation
 
 
 @attrs(slots=True)
