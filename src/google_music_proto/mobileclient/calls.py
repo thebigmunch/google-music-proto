@@ -660,7 +660,7 @@ class PlaylistEntriesShared(MobileClientFeedCall):
 
 @attrs(slots=True)
 class PlaylistEntryFeed(MobileClientFeedCall):
-	"""Get a listing of library playlist entries.
+	"""Get a listing of user playlist entries.
 
 	Note:
 		The playlist entry list is paged. Getting all playlist entries will require looping through all pages.
@@ -1198,7 +1198,7 @@ class RadioStationFeed(MobileClientCall):
 		else:
 			for station_info in self.station_infos:
 				if ('station_id' in station_info) and (station_info['station_id'] == 'IFL'):
-					station_info.pop('station_id')
+					del station_info['station_id']
 					station_info['seed'] = {'seedType': 6}
 
 				if 'station_id' in station_info:
