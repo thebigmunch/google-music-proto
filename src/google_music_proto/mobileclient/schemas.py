@@ -1706,6 +1706,7 @@ class SharedPlaylistEntryItemSchema(MobileClientSchema):
 		}
 	"""
 
+	nextPageToken = fields.Str()
 	playlistEntry = fields.Nested(SharedPlaylistEntrySchema)
 	responseCode = fields.Str(required=True)
 	shareToken = fields.Str(required=True)

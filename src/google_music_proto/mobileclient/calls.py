@@ -689,7 +689,7 @@ class PlaylistEntriesBatch(MobileClientBatchCall):
 
 
 @attrs(slots=True)
-class PlaylistEntriesShared(MobileClientFeedCall):
+class PlaylistEntriesShared(MobileClientCall):
 	"""Get a listing of shared playlist entries.
 
 	Note:
@@ -708,18 +708,31 @@ class PlaylistEntriesShared(MobileClientFeedCall):
 	"""
 
 	endpoint = 'plentries/shared'
+	method = 'POST'
 
 	share_tokens = attrib()
 	max_results = attrib(default=250)
 	start_token = attrib(default=None)
-	updated_min = attrib(default=-1)
+	updated_min = attrib(default=0)
 
 	def __attrs_post_init__(self):
+		super().__attrs_post_init__()
+
+		if not isinstance(self.share_tokens, list):
+			self.share_tokens = [self.share_tokens]
+
+		self._data = {'entries': []}
+
 		# TODO: includeDeleted.
-		self._data['entries'] = [
-			{'shareToken': share_token}
-			for share_token in self.share_tokens
-		]
+		for share_token in self.share_tokens:
+			self._data['entries'].append(
+				{
+					'maxResults': self.max_results,
+					'shareToken': share_token,
+					'startToken': self.start_token,
+					'updatedMin': self.updated_min
+				}
+			)
 
 
 @attrs(slots=True)
