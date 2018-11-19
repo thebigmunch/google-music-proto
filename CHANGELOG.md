@@ -12,6 +12,10 @@ This project adheres to [Semantic Versioning](https://semver.org).
 
 * ``PlaylistEntriesBatch``
 
+### Changed
+
+* Mobile client types enums to use string values instead of integers.
+
 ### Fixed
 
 * ``PlaylistEntriesShared``

@@ -1140,9 +1140,16 @@ class Query(MobileClientCall):
 		super().__init__()
 
 		if not kwargs:
-			query_types = ','.join(str(type.value) for type in QueryResultType)
+			query_types = ','.join(
+				type_.value
+				for type_ in QueryResultType
+			)
 		else:
-			query_types = ','.join(str(QueryResultType[type[:-1]].value) for type in kwargs)  # Make type names singular for enum lookup.
+			# Make type names singular for enum lookup.
+			query_types = ','.join(
+				QueryResultType[type_[:-1]].value
+				for type_ in kwargs
+			)
 
 		self._params.update({
 			'ct': query_types,
