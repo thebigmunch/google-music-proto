@@ -491,7 +491,7 @@ class UpAuth(MusicManagerCall):
 		self._data.friendly_name = self.uploader_name
 
 	@staticmethod
-	def check_response(response):
+	def check_success(response):
 		return response.HasField('auth_status') and response.auth_status == upload_pb2.UploadResponse.OK
 
 
