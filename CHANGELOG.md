@@ -20,6 +20,7 @@ This project adheres to [Semantic Versioning](https://semver.org).
 
 * ``PlaylistEntriesShared``
 * Misnamed ``check_success`` method for ``UpAuth``.
+* Raise an exception if ``check_success`` fails.
 
 
 

@@ -37,7 +37,8 @@ class MusicManagerCall(Call):
 		except DecodeError:
 			raise
 
+		# TODO: Better exception.
 		if not self.check_success(res_body):
-			raise
+			raise Exception(f"{self.__class__.__name__} call failed: {res_body}")
 
 		return ParsedResponse(headers=response_headers, body=res_body)
