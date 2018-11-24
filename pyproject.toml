@@ -5,7 +5,7 @@ build-backend = "poetry.masonry.api"
 [tool.poetry]
 name = "google-music-proto"
 description = "Sans-I/O wrapper of Google Music API calls."
-version = "2.0.0"
+version = "2.1.0"
 
 license = "MIT"
 
@@ -20,7 +20,7 @@ homepage = "https://github.com/thebigmunch/google-music-proto"
 python = "^3.6"
 
 attrs = "^18.2"
-audio-metadata = "^0.1"
+audio-metadata = "^0.2"
 marshmallow = "^2.1"
 pendulum = "^2.0"
 protobuf = "^3.5"

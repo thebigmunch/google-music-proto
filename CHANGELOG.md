@@ -6,7 +6,13 @@ This project adheres to [Semantic Versioning](https://semver.org).
 
 ## [Unreleased](https://github.com/thebigmunch/google-music-proto/tree/master)
 
-[Commits](https://github.com/thebigmunch/google-music-proto/compare/2.0.0...master)
+[Commits](https://github.com/thebigmunch/google-music-proto/compare/2.1.0...master)
+
+
+
+## [2.1.0](https://github.com/thebigmunch/google-music-proto/releases/tag/2.1.0) (2018-11-24)
+
+[Commits](https://github.com/thebigmunch/google-music-proto/compare/2.0.0...2.1.0)
 
 ### Added
 
@@ -21,7 +27,6 @@ This project adheres to [Semantic Versioning](https://semver.org).
 * ``PlaylistEntriesShared``
 * Misnamed ``check_success`` method for ``UpAuth``.
 * Raise an exception if ``check_success`` fails.
-
 
 
 ## [2.0.0](https://github.com/thebigmunch/google-music-proto/releases/tag/2.0.0) (2018-11-05)
