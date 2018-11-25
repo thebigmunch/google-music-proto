@@ -480,7 +480,6 @@ class UpAuth(MusicManagerCall):
 	endpoint = 'upauth'
 	method = 'POST'
 	request_type = upload_pb2.UpAuthRequest
-	response_type = upload_pb2.UpAuthResponse
 
 	uploader_id = attrib()
 	uploader_name = attrib()
