@@ -188,6 +188,11 @@ class Metadata(MusicManagerCall):
 
 		# TODO: Some might not match (E.g. AAC, ALAC).
 		extension = metadata.__class__.__name__
+
+		# Fake WAV format support.
+		if extension == 'WAV':
+			extension = 'FLAC'
+
 		if not hasattr(locker_pb2.Track, extension):
 			raise ValueError(f'{extension} is not a supported filetype.')
 
