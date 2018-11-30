@@ -412,7 +412,7 @@ class ScottyAgentPost(JSONCall):
 							# Size seems to be sent when uploading MP3, but not FLAC.
 							# In fact, uploading FLAC directly fails when this is given.
 							# Leaving it out works for everything.
-							# 'size': track.estimated_size
+							# 'size': self.track.estimated_size
 						}
 					}
 				]
