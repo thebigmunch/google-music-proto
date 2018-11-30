@@ -11,7 +11,7 @@ This project adheres to [Semantic Versioning](https://semver.org).
 ### Fixed
 
 * Spoof WAV file content type in ``Metadata.get_track_info``.
-
+* Fix transcode quality option selection.
 
 
 ## [2.1.1](https://github.com/thebigmunch/google-music-proto/releases/tag/2.1.1) (2018-11-24)

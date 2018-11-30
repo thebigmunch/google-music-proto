@@ -124,7 +124,10 @@ def transcode_to_mp3(song, *, slice_start=None, slice_duration=None, quality='32
 	if slice_start is not None:
 		command.extend(['-ss', str(slice_start)])
 
-	command.extend(['-q:a', str(quality)])
+	if isinstance(quality, int):
+		command.extend(['-q:a', str(quality)])
+	elif isinstance(quality, str):
+		command.extend(['-b:a', str(quality)])
 
 	# Use 's16le' to not output id3 headers.
 	command.extend(['-f', 's16le', '-c', 'libmp3lame', '-'])
