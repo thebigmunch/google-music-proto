@@ -258,7 +258,7 @@ class Metadata(MusicManagerCall):
 		if 'discnumber' in metadata.tags:
 			disc_split = metadata.tags.discnumber[0].split('/')
 
-			track.track_number = int(disc_split[0])
+			track.disc_number = int(disc_split[0])
 			if len(disc_split) == 2:
 				track.total_disc_count = int(disc_split[1])
 
