@@ -8,6 +8,10 @@ This project adheres to [Semantic Versioning](https://semver.org).
 
 [Commits](https://github.com/thebigmunch/google-music-proto/compare/2.1.2...master)
 
+### Fixed
+
+* Handle float values for beats per minute.
+
 
 ## [2.1.2](https://github.com/thebigmunch/google-music-proto/releases/tag/2.1.2) (2018-11-30)
 
@@ -16,7 +20,7 @@ This project adheres to [Semantic Versioning](https://semver.org).
 ### Fixed
 
 * Spoof WAV file content type in ``Metadata.get_track_info``.
-* Fix transcode quality option selection.
+* Transcode quality option selection.
 
 
 ## [2.1.1](https://github.com/thebigmunch/google-music-proto/releases/tag/2.1.1) (2018-11-24)

@@ -241,7 +241,7 @@ class Metadata(MusicManagerCall):
 			track.album_artist = metadata.tags.albumartist[0]
 
 		if 'bpm' in metadata.tags:
-			track.beats_per_minute = int(metadata.tags.bpm[0])
+			track.beats_per_minute = round(float(metadata.tags.bpm[0]))
 
 		if 'composer' in metadata.tags:
 			track.composer = metadata.tags.composer[0]
