@@ -8,6 +8,11 @@ This project adheres to [Semantic Versioning](https://semver.org).
 
 [Commits](https://github.com/thebigmunch/google-music-proto/compare/2.1.2...master)
 
+### Added
+
+* ``no_sample`` parameter to ``Sample.generate_sample`` for
+  sending empty audio sample to avoid ffmpeg/avconv dependency.
+
 ### Fixed
 
 * Handle float values for beats per minute.

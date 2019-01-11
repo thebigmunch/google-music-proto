@@ -313,15 +313,26 @@ class Sample(MusicManagerCall):
 	# TODO: album art documentation.
 	# TODO: Improved album art API?
 	@staticmethod
-	def generate_sample(song, track, sample_request, *, external_art=None):
+	def generate_sample(
+		song,
+		track,
+		sample_request,
+		*,
+		external_art=None,
+		no_sample=False
+	):
 		"""Generate a track sample from an audio file.
 
 		Parameters:
 			track (locker_pb2.Track): A locker track of the audio file as created by :meth:`Metadata.get_track_info`.
 			sample_request (upload_pb2.SignedChallengeInfo):
 				The ``'signed_challenge_info'`` portion for the audio file from the :class:`Metadata` response.
-			external_art(bytes, optional): The binary data of an external album art image.
+			external_art(bytes, Optional): The binary data of an external album art image.
 				If not provided, embedded album art will be used, if present.
+			no_sample(bool, Optional):
+				Don't generate an audio sample from song;
+				send empty audio sample.
+				Default: Create an audio sample using ffmpeg/avconv.
 		"""
 
 		track_sample = upload_pb2.TrackSample()
@@ -329,10 +340,15 @@ class Sample(MusicManagerCall):
 		track_sample.signed_challenge_info.CopyFrom(sample_request)
 
 		try:
-			track_sample.sample = transcode_to_mp3(
-				song, slice_start=sample_request.challenge_info.start_millis // 1000,
-				slice_duration=sample_request.challenge_info.duration_millis // 1000, quality='128k'
-			)
+			if no_sample:
+				track_sample.sample = b''
+			else:
+				track_sample.sample = transcode_to_mp3(
+					song,
+					slice_start=sample_request.challenge_info.start_millis // 1000,
+					slice_duration=sample_request.challenge_info.duration_millis // 1000,
+					quality='128k'
+				)
 
 			album_art = external_art or get_album_art(song)
 
@@ -361,7 +377,7 @@ class ScottyAgentPost(JSONCall):
 		server_track_id (str): The server ID of the audio file to upload as given in the response of :class:`Metadata` or :class:`Sample`.
 		track (locker_pb2.Track): A locker track of the audio file as created by :meth:`Metadata.get_track_info`.
 		song (os.PathLike or str or audio_metadata.Format): The path to an audio file or an instance of :class:`audio_metadata.Format`.
-		external_art(bytes, optional): The binary data of an external album art image.
+		external_art(bytes, Optional): The binary data of an external album art image.
 			If not provided, embedded album art will be used, if present.
 		total_song_count (int, Optional): Total number of songs to be uploaded in this session.
 			Default: 1
