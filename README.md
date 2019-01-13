@@ -1,6 +1,7 @@
 # google-music-proto
 
-[![Read the Docs](https://img.shields.io/readthedocs/google-music-proto.svg)](https://google-music-proto.readthedocs.io)
+[![Read the Docs - Stable](https://img.shields.io/readthedocs/google-music-proto/stable.svg?label=stable%20docs)](https://google-music-proto.readthedocs.io/en/stable/)
+[![Read the Docs - Latest](https://img.shields.io/readthedocs/google-music-proto/latest.svg?label=latest%20docs)](https://google-music-proto.readthedocs.io/en/latest/)
 
 [google-music-proto](https://github.com/thebigmunch/google-music-proto) is a [sans-I/O](https://sans-io.readthedocs.io/)
 library for interacting with Google Music.
