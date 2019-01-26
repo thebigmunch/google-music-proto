@@ -8,6 +8,10 @@ This project adheres to [Semantic Versioning](https://semver.org).
 
 [Commits](https://github.com/thebigmunch/google-music-proto/compare/2.2.0...master)
 
+### Added
+
+* Workaround to support ``TDRC`` ID3v2.4 frame for year.
+
 
 ## [2.2.0](https://github.com/thebigmunch/google-music-proto/releases/tag/2.2.0) (2019-01-15)
 

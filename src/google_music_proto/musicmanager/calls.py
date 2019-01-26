@@ -251,6 +251,17 @@ class Metadata(MusicManagerCall):
 			year = pendulum.parse(date).year
 
 			track.year = year
+		# TODO: Remove when audio-metadata fully supports ID3v2.4.
+		# See https://github.com/thebigmunch/audio-metadata/issues/1
+		# See https://github.com/thebigmunch/google-music-scripts/issues/23
+		elif 'TDRC' in metadata.tags:
+			date = metadata.tags.TDRC[0]
+			try:
+				year = pendulum.parse(date).year
+			except pendulum.exceptions.ParserError:
+				pass
+			else:
+				track.year = year
 
 		if 'genre' in metadata.tags:
 			track.genre = metadata.tags.genre[0]
