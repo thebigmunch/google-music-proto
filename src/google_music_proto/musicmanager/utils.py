@@ -22,13 +22,25 @@ def generate_client_id(song):
 		md5sum = unhexlify(song.streaminfo.md5)
 	else:
 		m = md5()
+
+		audio_size = song.streaminfo._size
 		with open(song.filepath, 'rb') as f:
 			f.seek(song.streaminfo._start)
-			m.update(f.read(song.streaminfo._size))  # TODO: Speed up by reading in chunks
+
+			# Speed up by reading in chunks
+			read = 0
+			while True:
+				read_size = min(audio_size - read, 65536)
+				if not read_size:
+					break
+
+				read += read_size
+				data = f.read(read_size)
+				m.update(data)
 
 		md5sum = m.digest()
 
-	client_id = b64encode(md5sum).rstrip(b'=')
+	client_id = b64encode(md5sum).rstrip(b'=').decode('ascii')
 
 	return client_id
 
