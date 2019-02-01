@@ -29,7 +29,7 @@ setup(
 
 	install_requires=[
 		'attrs>=18.2',
-		'audio-metadata>=0.3',
+		'audio-metadata>=0.4',
 		'marshmallow>=2.1',
 		'pendulum>=2.0',
 		'protobuf>=3.5'
