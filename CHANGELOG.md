@@ -12,6 +12,10 @@ This project adheres to [Semantic Versioning](https://semver.org).
 
 * Return ``str`` instead of ``bytes`` from ``generate_client_id``.
 
+### Removed
+
+* Workaround to support ``TDRC`` ID3v2.4 frame for year.
+
 
 ## [2.3.0](https://github.com/thebigmunch/google-music-proto/releases/tag/2.3.0) (2019-01-26)
 
