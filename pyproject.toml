@@ -5,7 +5,7 @@ build-backend = "poetry.masonry.api"
 [tool.poetry]
 name = "google-music-proto"
 description = "Sans-I/O wrapper of Google Music API calls."
-version = "2.3.0"
+version = "2.4.0"
 
 license = "MIT"
 
