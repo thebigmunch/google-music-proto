@@ -11,7 +11,7 @@ library for interacting with Google Music.
 
 ## Installation
 
-``pip install google-music-proto``
+``pip install -U google-music-proto``
 
 
 ## Usage
