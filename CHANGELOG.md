@@ -8,6 +8,10 @@ This project adheres to [Semantic Versioning](https://semver.org).
 
 [Commits](https://github.com/thebigmunch/google-music-proto/compare/2.4.0...master)
 
+* Ability to subscribe to public playlists using
+  ``PlaylistBatch`` with ``PlaylistBatch.create``.
+  Unsubscribing is the same as deleting a user playlist.
+
 
 ## [2.4.0](https://github.com/thebigmunch/google-music-proto/releases/tag/2.4.0) (2019-02-01)
 

@@ -521,14 +521,19 @@ class PlaylistBatch(MobileClientBatchCall):
 	endpoint = 'playlistbatch'
 
 	@staticmethod
-	def create(name, description, share_state):
+	def create(name, description, type_, *, owner_name=None, share_state=None, share_token=None):
 		"""Build a playlist create event.
 
 		Parameters:
 			name (str): Name to give the playlist.
 			description (str): Description to give the playlist.
-			make_public (bool): If ``True`` and account has a subscription, make playlist public.
-				Default: ``False``
+			type_ (str): ``'SHARED'`` if subscribing to a public playlist,
+				``'USER_GENERATED'`` if creating a playlist.
+			share_state (str, Optional): ``'PUBLIC'`` to share the created playlist,
+				``'PRIVATE'`` otherwise.
+			owner_name (str, Optional): Owner name when susbcribing to a playlist.
+			share_token (str, Optional): The share token of a shared playlist to
+				subscribe to.
 
 		Returns:
 			dict: A mutation dict.
@@ -536,17 +541,27 @@ class PlaylistBatch(MobileClientBatchCall):
 
 		timestamp = int(time.time() * 1000000)
 
-		return {
+		mutation = {
 			'create': {
 				'creationTimestamp': timestamp,
 				'deleted': False,
 				'description': description,
 				'lastModifiedTimestamp': timestamp,
 				'name': name,
-				'shareState': share_state,
-				'type': 'USER_GENERATED'
+				'type': type_
 			}
 		}
+
+		if owner_name is not None:
+			mutation['create']['ownerName'] = owner_name
+
+		if share_state is not None:
+			mutation['create']['shareState'] = share_state
+
+		if share_token is not None:
+			mutation['create']['shareToken'] = share_token
+
+		return mutation
 
 	@staticmethod
 	def delete(playlist_id):
@@ -569,7 +584,8 @@ class PlaylistBatch(MobileClientBatchCall):
 			playlist_id (str): A playlist ID.
 			name (str): Name to give the playlist.
 			description (str): Description to give the playlist.
-			make_public (bool): If ``True`` and account has a subscription, make playlist public.
+			share_state (str): ``'PUBLIC'`` to share the playlist,
+				``'PRIVATE'`` otherwise.
 
 		Returns:
 			dict: A mutation dict.
