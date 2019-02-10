@@ -50,7 +50,7 @@ class ActivityRecordRealtime(MobileClientBatchCall):
 			dict: An event dict.
 		"""
 
-		event_id = str(uuid.uuid1())
+		event_id = str(uuid.uuid4())
 		timestamp = int(time.time())
 		play_time = track_duration if play_time is None else play_time * 1000
 
@@ -90,7 +90,7 @@ class ActivityRecordRealtime(MobileClientBatchCall):
 			dict: An event dict.
 		"""
 
-		event_id = str(uuid.uuid1())
+		event_id = str(uuid.uuid4())
 		timestamp = int(time.time())
 
 		if track_id.startswith('T'):
@@ -643,7 +643,7 @@ class PlaylistEntriesBatch(MobileClientBatchCall):
 
 		mutation = {
 			'create': {
-				'clientId': playlist_entry_id or str(uuid.uuid1()),
+				'clientId': playlist_entry_id or str(uuid.uuid4()),
 				'creationTimestamp': '-1',
 				'deleted': False,
 				'lastModifiedTimestamp': '0',
