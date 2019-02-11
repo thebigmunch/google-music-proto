@@ -103,7 +103,7 @@ class ActivityRecordRealtime(MobileClientBatchCall):
 			'details': {
 				'rating': {
 					'context': {},
-					'rating': TrackRating(rating).name
+					'rating': TrackRating(str(rating)).name
 				}
 			},
 			'eventId': event_id,
