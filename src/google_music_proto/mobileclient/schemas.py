@@ -1,24 +1,86 @@
 # flake8: noqa
 
 __all__ = [
-	'AlbumSchema', 'ArtRefSchema', 'ArtistSchema', 'AttributionSchema', 'BrowseStationCategoriesSchema',
-	'BrowseStationsSchema', 'BrowseTopChartGenresSchema', 'BrowseTopChartSchema', 'ColorStyleSchema',
-	'ConfigEntrySchema', 'ConfigListEntriesSchema', 'ConfigListSchema', 'DeviceManagementInfoSchema',
-	'DistilledContextWrapperSchema', 'EphemeralTopItemsSchema', 'EphemeralTopSchema', 'ExploreTabEntityGroupSchema',
-	'ExploreTabEntitySchema', 'ExploreTabSchema', 'ExploreTabsSchema', 'GenreListSchema', 'GenreRefSchema', 'GenreSchema',
-	'ImageColorStylesSchema', 'ImageRefSchema', 'IsPlaylistSharedSchema', 'ListenNowAlbumIDSchema', 'ListenNowAlbumSchema',
-	'ListenNowDismissedItemsSchema', 'ListenNowItemListSchema', 'ListenNowItemSchema', 'ListenNowRadioStationIDSchema',
-	'ListenNowRadioStationSchema', 'ListenNowSituationListSchema', 'PlaylistEntryItemsSchema', 'PlaylistEntryListSchema',
-	'PlaylistEntrySchema', 'PlaylistListItemsSchema', 'PlaylistListSchema', 'PlaylistSchema', 'PodcastBrowseHierarchySchema',
-	'PodcastBrowseSchema', 'PodcastEpisodeListItemsSchema', 'PodcastEpisodeListSchema', 'PodcastEpisodeSchema',
-	'PodcastGenreSchema', 'PodcastSeriesListItemsSchema', 'PodcastSeriesListSchema', 'PodcastSeriesSchema',
-	'PodcastSeriesUserPreferencesSchema', 'RadioFeedItemsSchema', 'RadioFeedSchema', 'RadioListItemsSchema',
-	'RadioListSchema', 'RadioSeedMetadataSchema', 'RadioSeedSchema', 'RadioStationSchema', 'SearchResponseSchema',
-	'SearchResultSchema', 'SearchResultVideoSchema', 'SearchSuggestedQuerySchema', 'SearchSuggestionSchema',
-	'SharedPlaylistEntryItemSchema', 'SharedPlaylistEntryListSchema', 'SharedPlaylistEntrySchema', 'SituationSchema',
-	'StationCategorySchema', 'StoreTrackSchema', 'TopChartHeaderSchema', 'TopChartSchema', 'TrackBatchItemSchema',
-	'TrackBatchSchema', 'TrackListItemsSchema', 'TrackListSchema', 'TrackSchema', 'UploadedTrackSchema',
-	'UserClientIDListItemsSchema', 'UserClientIDListSchema', 'VideoSchema', 'VideoThumbnailSchema'
+	'AlbumSchema',
+	'ArtRefSchema',
+	'ArtistSchema',
+	'AttributionSchema',
+	'BrowseStationCategoriesSchema',
+	'BrowseStationsSchema',
+	'BrowseTopChartGenresSchema',
+	'BrowseTopChartSchema',
+	'ColorStyleSchema',
+	'ConfigEntrySchema',
+	'ConfigListEntriesSchema',
+	'ConfigListSchema',
+	'DeviceManagementInfoSchema',
+	'DistilledContextWrapperSchema',
+	'EphemeralTopItemsSchema',
+	'EphemeralTopSchema',
+	'ExploreTabEntityGroupSchema',
+	'ExploreTabEntitySchema',
+	'ExploreTabSchema',
+	'ExploreTabsSchema',
+	'GenreListSchema',
+	'GenreRefSchema',
+	'GenreSchema',
+	'ImageColorStylesSchema',
+	'ImageRefSchema',
+	'IsPlaylistSharedSchema',
+	'ListenNowAlbumIDSchema',
+	'ListenNowAlbumSchema',
+	'ListenNowDismissedItemsSchema',
+	'ListenNowItemListSchema',
+	'ListenNowItemSchema',
+	'ListenNowRadioStationIDSchema',
+	'ListenNowRadioStationSchema',
+	'ListenNowSituationListSchema',
+	'PlaylistEntryItemsSchema',
+	'PlaylistEntryListSchema',
+	'PlaylistEntrySchema',
+	'PlaylistListItemsSchema',
+	'PlaylistListSchema',
+	'PlaylistSchema',
+	'PodcastBrowseHierarchySchema',
+	'PodcastBrowseSchema',
+	'PodcastEpisodeListItemsSchema',
+	'PodcastEpisodeListSchema',
+	'PodcastEpisodeSchema',
+	'PodcastGenreSchema',
+	'PodcastSeriesListItemsSchema',
+	'PodcastSeriesListSchema',
+	'PodcastSeriesSchema',
+	'PodcastSeriesUserPreferencesSchema',
+	'RadioFeedItemsSchema',
+	'RadioFeedSchema',
+	'RadioListItemsSchema',
+	'RadioListSchema',
+	'RadioSeedMetadataSchema',
+	'RadioSeedSchema',
+	'RadioStationSchema',
+	'SearchResponseSchema',
+	'SearchResultSchema',
+	'SearchResultVideoSchema',
+	'SearchSuggestedQuerySchema',
+	'SearchSuggestionSchema',
+	'SharedPlaylistEntryItemSchema',
+	'SharedPlaylistEntryListSchema',
+	'SharedPlaylistEntrySchema',
+	'SituationSchema',
+	'StationCategorySchema',
+	'StoreTrackSchema',
+	'TopChartHeaderSchema',
+	'TopChartSchema',
+	'TrackBatchItemSchema',
+	'TrackBatchSchema',
+	'TrackListItemsSchema',
+	'TrackListSchema',
+	'TrackSchema',
+	'UploadedTrackSchema',
+	'UserClientIDListItemsSchema',
+	'UserClientIDListSchema',
+	'VideoSchema',
+	'VideoThumbnailSchema',
 ]
 
 from marshmallow import fields
@@ -286,7 +348,7 @@ class StoreTrackSchema(MobileClientSchema):
 		validate=OneOf(
 			['0', '1', '5'],
 			labels=('Not Rated', 'Thumbs Down', 'Thumbs Up'),
-			error="rating is not one of {choices} ({labels})."
+			error="rating is not one of {choices} ({labels}).",
 		)
 	)
 	storeId = fields.Str(required=True)
@@ -371,8 +433,8 @@ class UploadedTrackSchema(MobileClientSchema):
 		validate=OneOf(
 			['0', '1', '5'],
 			labels=('Not Rated', 'Thumbs Down', 'Thumbs Up'),
-			error="rating is not one of {choices} ({labels})."
-		)
+			error="rating is not one of {choices} ({labels}).",
+		),
 	)
 	recentTimestamp = fields.Str(required=True)
 	storeId = fields.Str()
@@ -417,7 +479,7 @@ class TrackSchema(MobileClientSchema):
 		validate=OneOf(
 			['0', '1', '5'],
 			labels=('Not Rated', 'Thumbs Down', 'Thumbs Up'),
-			error="rating is not one of {choices} ({labels})."
+			error="rating is not one of {choices} ({labels}).",
 		)
 	)
 	recentTimestamp = fields.Str()
@@ -503,7 +565,7 @@ class PlaylistSchema(MobileClientSchema):
 	type = fields.Str(
 		validate=OneOf(
 			['MAGIC', 'SHARED', 'USER_GENERATED'],
-			error="type is not one of {choices}."
+			error="type is not one of {choices}.",
 		)
 	)
 
@@ -618,8 +680,18 @@ class ExploreTabEntitySchema(MobileClientSchema):
 	album = fields.Nested(AlbumSchema)
 	genre = fields.Nested(GenreSchema)
 	kind = fields.Str(requried=True, validate=Equal('sj#exEntity'))
-	playlist = fields.Nested(PlaylistSchema(
-		only=['albumArtRef', 'description', 'kind', 'name', 'ownerName', 'shareToken', 'type'])
+	playlist = fields.Nested(
+		PlaylistSchema(
+			only=[
+				'albumArtRef',
+				'description',
+				'kind',
+				'name',
+				'ownerName',
+				'shareToken',
+				'type',
+			]
+		)
 	)
 	track = fields.Nested(StoreTrackSchema)
 
@@ -642,7 +714,17 @@ class ExploreTabEntityGroupSchema(MobileClientSchema):
 	continuation_token = fields.Str()
 	description = fields.Str()
 	entities = fields.Nested(ExploreTabEntitySchema, many=True)
-	group_type = fields.Str(validate=OneOf(['KEY_ALBUMS', 'NEW_RELEASE', 'TOP_ALBUMS', 'TOP_PLAYLISTS', 'TOP_SONGS']))
+	group_type = fields.Str(
+		validate=OneOf(
+			[
+				'KEY_ALBUMS',
+				'NEW_RELEASE',
+				'TOP_ALBUMS',
+				'TOP_PLAYLISTS',
+				'TOP_SONGS',
+			]
+		)
+	)
 	kind = fields.Str(required=True, validate=Equal('sj#exEntityGroup'))
 	start_position = fields.Int()
 	title = fields.Str()
@@ -662,7 +744,16 @@ class ExploreTabSchema(MobileClientSchema):
 
 	groups = fields.Nested(ExploreTabEntityGroupSchema, many=True)
 	kind = fields.Str(required=True, validate=Equal('sj#exTab'))
-	tab_type = fields.Str(validate=OneOf(['GENRES', 'NEW_RELEASES', 'RECOMMENDED', 'TOP_CHARTS']))
+	tab_type = fields.Str(
+		validate=OneOf(
+			[
+				'GENRES',
+				'NEW_RELEASES',
+				'RECOMMENDED',
+				'TOP_CHARTS',
+			]
+		)
+	)
 
 
 class PlaylistEntrySchema(MobileClientSchema):
@@ -1017,7 +1108,11 @@ class BrowseStationCategoriesSchema(MobileClientSchema):
 			'root': STATION_CATEGORY
 		}
 	"""
-	kind = fields.Str(required=True, validate=Equal('sj#getStationCategoriesResponse'))
+
+	kind = fields.Str(
+		required=True,
+		validate=Equal('sj#getStationCategoriesResponse')
+	)
 	root = fields.Nested(StationCategorySchema, required=True)
 
 
@@ -1228,7 +1323,9 @@ class ListenNowAlbumSchema(MobileClientSchema):
 
 class ListenNowDismissedItemSchema(MobileClientSchema):
 	dismissalTimestamp = fields.Str(required=True)
-	item_id = fields.Dict()  # TODO: Find all version of this. Know to have 'type' field and can have an 'album_id' dict.
+	item_id = (
+		fields.Dict()
+	)  # TODO: Find all version of this. Know to have 'type' field and can have an 'album_id' dict.
 	kind = fields.Str(required=True, validate=Equal('sj#dismissedItem'))
 	suggestion_reason = fields.Str(required=True)
 	uuid = fields.UUID(required=True)
@@ -1620,7 +1717,9 @@ class SearchResultSchema(MobileClientSchema):
 	album = fields.Nested(AlbumSchema)
 	artist = fields.Nested(ArtistSchema)
 	cluster = fields.Nested(SearchResultClusterInfoSchema, many=True)
-	playlist = fields.Nested(PlaylistSchema(exclude=['creationTimestamp', 'id', 'lastModifiedTimestamp']))
+	playlist = fields.Nested(
+		PlaylistSchema(exclude=['creationTimestamp', 'id', 'lastModifiedTimestamp'])
+	)
 	score = fields.Float()
 	series = fields.Nested(PodcastSeriesSchema)
 	situation = fields.Nested(SituationSchema)
@@ -1724,7 +1823,10 @@ class SharedPlaylistEntryListSchema(MobileClientSchema):
 	"""
 
 	entries = fields.Nested(SharedPlaylistEntryItemSchema, many=True)
-	kind = fields.Str(required=True, validate=Equal('sj#listSharedPlaylistEntriesResponse'))
+	kind = fields.Str(
+		required=True,
+		validate=Equal('sj#listSharedPlaylistEntriesResponse')
+	)
 
 
 class TrackBatchItemSchema(MobileClientSchema):

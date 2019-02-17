@@ -1,5 +1,8 @@
 __all__ = [
-	'generate_client_id', 'get_album_art', 'get_transcoder', 'transcode_to_mp3'
+	'generate_client_id',
+	'get_album_art',
+	'get_transcoder',
+	'transcode_to_mp3',
 ]
 
 import os
@@ -73,8 +76,16 @@ def get_transcoder():
 			transcoder_details[transcoder] = 'Not installed.'
 			continue
 
-		stdout = subprocess.run([command_path, '-codecs'], stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, universal_newlines=True).stdout
-		mp3_encoding_support = ('libmp3lame' in stdout and 'disable-libmp3lame' not in stdout)
+		stdout = subprocess.run(
+			[command_path, '-codecs'],
+			stdout=subprocess.PIPE,
+			stderr=subprocess.DEVNULL,
+			universal_newlines=True,
+		).stdout
+		mp3_encoding_support = (
+			'libmp3lame' in stdout
+			and 'disable-libmp3lame' not in stdout
+		)
 		if mp3_encoding_support:
 			transcoder_details[transcoder] = "MP3 encoding support."
 			break
@@ -91,7 +102,12 @@ def get_transcoder():
 
 def _transcode(command, input_=None):
 	try:
-		transcode = subprocess.run(command, input=input_, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+		transcode = subprocess.run(
+			command,
+			input=input_,
+			stdout=subprocess.PIPE,
+			stderr=subprocess.PIPE,
+		)
 
 		transcode.check_returncode()
 	except (OSError, subprocess.CalledProcessError) as e:
@@ -129,7 +145,9 @@ def transcode_to_mp3(song, *, slice_start=None, slice_duration=None, quality='32
 	elif isinstance(song, os.PathLike):
 		command = [command_path, '-i', song.__fspath__()]
 	else:
-		raise ValueError("'song' must be os.PathLike, filepath string, a file/bytes-like object, or binary data.")
+		raise ValueError(
+			"'song' must be os.PathLike, filepath string, a file/bytes-like object, or binary data."
+		)
 
 	if slice_duration is not None:
 		command.extend(['-t', str(slice_duration)])

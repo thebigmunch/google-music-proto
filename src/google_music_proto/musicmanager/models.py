@@ -15,9 +15,9 @@ class MusicManagerCall(Call):
 		self._data = self.request_type()
 		self._data.uploader_id = uploader_id
 
-		self._headers.update({
-			'Content-Type': 'application/x-google-protobuf'
-		})
+		self._headers.update(
+			{'Content-Type': 'application/x-google-protobuf'}
+		)
 
 		self._params.update({'version': 1})
 

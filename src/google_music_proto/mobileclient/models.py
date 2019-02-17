@@ -1,7 +1,10 @@
 __all__ = [
-	'MobileClientBatchCall', 'MobileClientCall',
-	'MobileClientFeedCall', 'MobileClientFetchCall',
-	'MobileClientSchema', 'MobileClientStreamCall'
+	'MobileClientBatchCall',
+	'MobileClientCall',
+	'MobileClientFeedCall',
+	'MobileClientFetchCall',
+	'MobileClientSchema',
+	'MobileClientStreamCall',
 ]
 
 import base64
@@ -24,12 +27,14 @@ class MobileClientCall(JSONCall):
 	def __attrs_post_init__(self):
 		super().__attrs_post_init__()
 
-		self._params.update({
-			'alt': 'json',
-			'dv': 0,
-			'hl': 'en_US',
-			'tier': 'fr'
-		})
+		self._params.update(
+			{
+				'alt': 'json',
+				'dv': 0,
+				'hl': 'en_US',
+				'tier': 'fr',
+			}
+		)
 
 		if self.endpoint:
 			self._url = f'{self.base_url}/{self.endpoint}'
@@ -63,14 +68,18 @@ class MobileClientFeedCall(MobileClientCall):
 		super().__attrs_post_init__()
 
 		if self.max_results is not None:
-			self._data.update({'max-results': self.max_results})
+			self._data.update(
+				{'max-results': self.max_results}
+			)
 
 		if self.start_token is not None:
-			self._data.update({'start-token': self.start_token})
+			self._data.update(
+				{'start-token': self.start_token}
+			)
 
-		self._params.update({
-			'updated-min': self.updated_min
-		})
+		self._params.update(
+			{'updated-min': self.updated_min}
+		)
 
 
 @attrs(slots=True)
@@ -80,9 +89,9 @@ class MobileClientFetchCall(MobileClientCall):
 	def __attrs_post_init__(self, item_id):
 		super().__attrs_post_init__()
 
-		self._params.update({
-			'nid': item_id
-		})
+		self._params.update(
+			{'nid': item_id}
+		)
 
 
 @attrs(slots=True)
@@ -91,12 +100,14 @@ class MobileClientStreamCall(Call):
 	method = 'GET'
 
 	def __attrs_post_init__(self, item_id, quality='hi', device_id=None):
-		self._params.update({
-			'alt': 'json',
-			'dv': 0,
-			'locale': 'en_US',
-			'tier': 'fr'
-		})
+		self._params.update(
+			{
+				'alt': 'json',
+				'dv': 0,
+				'locale': 'en_US',
+				'tier': 'fr',
+			}
+		)
 		self._url = f'{self.base_url}/{self.endpoint}'
 
 		if device_id:
@@ -117,14 +128,16 @@ class MobileClientStreamCall(Call):
 
 		_sig = base64.urlsafe_b64encode(_mac.digest())[:-1]
 
-		self._params.update({
-			'audio_formats': 'mp3',
-			'net': 'mob',
-			'opt': quality,
-			'pt': 'e',
-			'sig': _sig,
-			'slt': _salt
-		})
+		self._params.update(
+			{
+				'audio_formats': 'mp3',
+				'net': 'mob',
+				'opt': quality,
+				'pt': 'e',
+				'sig': _sig,
+				'slt': _salt,
+			}
+		)
 
 
 class MobileClientSchema(Schema):

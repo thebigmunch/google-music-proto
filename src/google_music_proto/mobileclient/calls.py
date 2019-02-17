@@ -5,8 +5,11 @@ import uuid
 from attr import attrib, attrs
 
 from .models import (
-	MobileClientBatchCall, MobileClientCall, MobileClientFeedCall,
-	MobileClientFetchCall, MobileClientStreamCall
+	MobileClientBatchCall,
+	MobileClientCall,
+	MobileClientFeedCall,
+	MobileClientFetchCall,
+	MobileClientStreamCall,
 )
 from .types import QueryResultType, TrackRating
 
@@ -42,9 +45,11 @@ class ActivityRecordRealtime(MobileClientBatchCall):
 		Parameters:
 			track_id (str): A track ID.
 			track_duration (int or str): The duration of the track.
-			play_time (int, Optional): The amount of time user played the track in seconds.
+			play_time (int, Optional):
+				The amount of time user played the track in seconds.
 				Default: ``track_duration``
-			stream_auth_id (str, Optional): The stream auth ID from a stream call's headers.
+			stream_auth_id (str, Optional):
+				The stream auth ID from a stream call's headers.
 
 		Returns:
 			dict: An event dict.
@@ -70,12 +75,12 @@ class ActivityRecordRealtime(MobileClientBatchCall):
 					'termination': 1,
 					'trackDurationMillis': track_duration,
 					'woodstockPlayDetails': {
-						'isWoodstockPlay': False
+						'isWoodstockPlay': False,
 					}
 				}
 			},
 			'eventId': event_id,
-			'trackId': track
+			'trackId': track,
 		}
 
 	@staticmethod
@@ -107,7 +112,7 @@ class ActivityRecordRealtime(MobileClientBatchCall):
 				}
 			},
 			'eventId': event_id,
-			'trackId': track
+			'trackId': track,
 		}
 
 
@@ -130,7 +135,8 @@ class BrowseStations(MobileClientCall):
 	"""Get a listing of stations by category from browse tab.
 
 	Parameters:
-		station_category_id (str): A station category ID as found in :class:`BrowseStationCategories` response.
+		station_category_id (str):
+			A station category ID as found in :class:`BrowseStationCategories` response.
 
 	Attributes:
 		endpoint: ``browse/stations``
@@ -168,7 +174,8 @@ class BrowseTopChartForGenre(MobileClientCall):
 	"""Get a listing of top charts for a top chart genre.
 
 	Parameters:
-		genre_id (str): A top chart genre ID as found in :class:`BrowseTopChartGenres` response.
+		genre_id (str):
+			A top chart genre ID as found in :class:`BrowseTopChartGenres` response.
 
 	Attributes:
 		endpoint: ``browse/topchartforgenres``
@@ -234,7 +241,8 @@ class DeviceManagementInfoDelete(DeviceManagementInfo):
 	"""Delete a registered device.
 
 	Parameters:
-		device_id (str): A device ID as found in :class:`DeviceManagementInfo` response.
+		device_id (str):
+			A device ID as found in :class:`DeviceManagementInfo` response.
 
 	Attributes:
 		endpoint: ``devicemanagementinfo``
@@ -248,9 +256,9 @@ class DeviceManagementInfoDelete(DeviceManagementInfo):
 	def __attrs_post_init__(self):
 		super().__attrs_post_init__()
 
-		self._params.update({
-			'delete-id': self.device_id
-		})
+		self._params.update(
+			{'delete-id': self.device_id}
+		)
 
 
 @attrs(slots=True)
@@ -263,13 +271,18 @@ class EphemeralTop(MobileClientFeedCall):
 		with a ``'rating'`` of 5.
 
 	Note:
-		The track list is paged. Getting all tracks will require looping through all pages.
+		The track list is paged.
+		Getting all tracks will require looping through all pages.
 
 	Parameters:
-		max_results (int, Optional): The maximum number of results on returned page.
+		max_results (int, Optional):
+			The maximum number of results on returned page.
 			Default: ``1000``
-		start_token (str, Optional): The token of the page to return. Default: Not sent to get first page.
-		updated_min (int, Optional): List changes since the given Unix epoch time in microseconds.
+		start_token (str, Optional):
+			The token of the page to return.
+			Default: Not sent to get first page.
+		updated_min (int, Optional):
+			List changes since the given Unix epoch time in microseconds.
 
 	Attributes:
 		endpoint: ``ephemeral/top``
@@ -289,7 +302,9 @@ class ExploreGenres(MobileClientCall):
 	"""Get a listing of track genres.
 
 	Parameters:
-		parent_genre_id (str): A genre ID. If given, a listing of this genre's sub-genres is returned.
+		parent_genre_id (str, Optional):
+			A genre ID.
+			If given, a listing of this genre's sub-genres is returned.
 
 	Attributes:
 		endpoint: ``explore/genres``
@@ -306,7 +321,9 @@ class ExploreGenres(MobileClientCall):
 		super().__attrs_post_init__()
 
 		if self.parent_genre_id is not None:
-			self._params.update({'parent-genre-id': self.parent_genre_id})
+			self._params.update(
+				{'parent-genre-id': self.parent_genre_id}
+			)
 
 
 # TODO: 'tabs' param?
@@ -322,9 +339,9 @@ class ExploreTabs(MobileClientCall):
 	def __attrs_post_init__(self):
 		super().__attrs_post_init__()
 
-		self._params.update({
-			'num-items': self.num_items
-		})
+		self._params.update(
+			{'num-items': self.num_items}
+		)
 
 		if self.genre_id is not None:
 			self._params.update(genre=self.genre_id)
@@ -336,8 +353,11 @@ class FetchAlbum(MobileClientFetchCall):
 
 	Parameters:
 		album_id (str): The album ID to look up.
-		include_description (bool): Include description of the album in the response.
-		include_tracks (bool): Include tracks from the album in the response.
+		include_description (bool, Optional):
+			Include description of the album in the response.
+			Default: ``True``
+		include_tracks (bool, Optional):
+			Include tracks from the album in the response.
 			Default: ``True``
 
 	Attributes:
@@ -357,10 +377,12 @@ class FetchAlbum(MobileClientFetchCall):
 
 		include_tracks = self.include_tracks if self.include_tracks else None
 
-		self._params.update({
-			'include-description': self.include_description,
-			'include-tracks': include_tracks
-		})
+		self._params.update(
+			{
+				'include-description': self.include_description,
+				'include-tracks': include_tracks,
+			}
+		)
 
 
 @attrs(slots=True)
@@ -369,10 +391,15 @@ class FetchArtist(MobileClientFetchCall):
 
 	Parameters:
 		artist_id (str): The artist ID to look up.
-		include_albums (bool): Include albums from the artist in the response.
+		include_albums (bool, Optional):
+			Include albums from the artist in the response.
 			Default: ``True``
-		num_related_artists (int): The maximum number of related artists to include in the response.
-		num_top_tracks (int): The maximum number of top tracks to include in the response.
+		num_related_artists (int, Optional):
+			The maximum number of related artists to include in the response.
+			Default: ``5``
+		num_top_tracks (int, Optional):
+			The maximum number of top tracks to include in the response.
+			Default: ``5``
 
 	Attributes:
 		endpoint: ``fetchartist``
@@ -390,11 +417,13 @@ class FetchArtist(MobileClientFetchCall):
 	def __attrs_post_init__(self):
 		super().__attrs_post_init__(self.artist_id)
 
-		self._params.update({
-			'include-albums': self.include_albums,
-			'num-related_artists': self.num_related_artists,
-			'num-top-tracks': self.num_top_tracks
-		})
+		self._params.update(
+			{
+				'include-albums': self.include_albums,
+				'num-related_artists': self.num_related_artists,
+				'num-top-tracks': self.num_top_tracks,
+			}
+		)
 
 
 @attrs(slots=True)
@@ -461,7 +490,8 @@ class ListenNowGetListenNowItems(MobileClientCall):
 	"""Get a listing of Listen Now items.
 
 	Note:
-		This does not include situations; use :class:`ListenNowSituations` to get situations.
+		This does not include situations;
+		use :class:`ListenNowSituations` to get situations.
 
 	Attributes:
 		endpoint: ``listennow/getlistennowitems``
@@ -478,7 +508,8 @@ class ListenNowSituations(MobileClientCall):
 	"""Get a listing of Listen Now situations.
 
 	Parameters:
-		tz_offset (int): A time zone offset from UTC in seconds.
+		tz_offset (int, Optional): A time zone offset from UTC in seconds.
+			Default is automatic detection.
 
 	Attributes:
 		endpoint: ``listennow/situations``
@@ -495,11 +526,11 @@ class ListenNowSituations(MobileClientCall):
 		super().__attrs_post_init__()
 
 		if self.tz_offset is None:
-			self.tz_offset = calendar.timegm(time.localtime()) - calendar.timegm(time.gmtime())
+			self.tz_offset = (
+				calendar.timegm(time.localtime()) - calendar.timegm(time.gmtime())
+			)
 
-		self._data.update({
-			'requestSignals': {'timeZoneOffsetSecs': self.tz_offset}
-		})
+		self._data.update({'requestSignals': {'timeZoneOffsetSecs': self.tz_offset}})
 
 
 @attrs(slots=True)
@@ -521,19 +552,31 @@ class PlaylistBatch(MobileClientBatchCall):
 	endpoint = 'playlistbatch'
 
 	@staticmethod
-	def create(name, description, type_, *, owner_name=None, share_state=None, share_token=None):
+	def create(
+		name,
+		description,
+		type_,
+		*,
+		owner_name=None,
+		share_state=None,
+		share_token=None
+	):
 		"""Build a playlist create event.
 
 		Parameters:
 			name (str): Name to give the playlist.
-			description (str): Description to give the playlist.
-			type_ (str): ``'SHARED'`` if subscribing to a public playlist,
+			description (str):
+				Description to give the playlist.
+			type_ (str):
+				``'SHARED'`` if subscribing to a public playlist,
 				``'USER_GENERATED'`` if creating a playlist.
-			share_state (str, Optional): ``'PUBLIC'`` to share the created playlist,
+			share_state (str, Optional):
+				``'PUBLIC'`` to share the created playlist,
 				``'PRIVATE'`` otherwise.
-			owner_name (str, Optional): Owner name when susbcribing to a playlist.
-			share_token (str, Optional): The share token of a shared playlist to
-				subscribe to.
+			owner_name (str, Optional):
+				Owner name when susbcribing to a playlist.
+			share_token (str, Optional):
+				The share token of a shared playlist to subscribe to.
 
 		Returns:
 			dict: A mutation dict.
@@ -548,7 +591,7 @@ class PlaylistBatch(MobileClientBatchCall):
 				'description': description,
 				'lastModifiedTimestamp': timestamp,
 				'name': name,
-				'type': type_
+				'type': type_,
 			}
 		}
 
@@ -596,7 +639,7 @@ class PlaylistBatch(MobileClientBatchCall):
 				'description': description,
 				'id': playlist_id,
 				'name': name,
-				'shareState': share_state
+				'shareState': share_state,
 			}
 		}
 
@@ -620,22 +663,30 @@ class PlaylistEntriesBatch(MobileClientBatchCall):
 	endpoint = 'plentriesbatch'
 
 	@staticmethod
-	def create(track_id, playlist_id, *, playlist_entry_id=None, preceding_entry_id=None, following_entry_id=None):
+	def create(
+		track_id,
+		playlist_id,
+		*,
+		playlist_entry_id=None,
+		preceding_entry_id=None,
+		following_entry_id=None
+	):
 		"""Build a playlist entry create event.
-
-		Note:
-
 
 		Parameters:
 			track_id (str): A track ID.
 			playlist_id (str): A playlist ID.
-			playlist_entry_id (str, Optional): A playlist entry ID to
-				assign to the created entry.
+			playlist_entry_id (str, Optional):
+				A playlist entry ID to assign to the created entry.
 				Default: Automatically generated.
-			preceding_entry_id (str, Optional): The playlist entry ID
-				that should precede the added track.
-			following_entry_id (str, Optional): The playlist entry ID
-				that should follow the added track.
+			preceding_entry_id (str, Optional):
+				The playlist entry ID that should precede the added track.
+				``None`` if entry is to be in first position.
+				Default: ``None``
+			following_entry_id (str, Optional):
+				The playlist entry ID that should follow the added track.
+				``None`` if entry is to be in last position.
+				Default: ``None``
 
 		Returns:
 			dict: A mutation dict.
@@ -649,7 +700,7 @@ class PlaylistEntriesBatch(MobileClientBatchCall):
 				'lastModifiedTimestamp': '0',
 				'playlistId': playlist_id,
 				'source': 2 if track_id.startswith('T') else 1,
-				'trackId': track_id
+				'trackId': track_id,
 			}
 		}
 
@@ -666,7 +717,7 @@ class PlaylistEntriesBatch(MobileClientBatchCall):
 		"""Build a playlist entry delete event.
 
 		Parameters:
-			playlist_entry_id (str): A playlist entryID.
+			playlist_entry_id (str): A playlist entry ID.
 
 		Returns:
 			dict: A mutation dict.
@@ -675,22 +726,44 @@ class PlaylistEntriesBatch(MobileClientBatchCall):
 		return {'delete': playlist_entry_id}
 
 	@staticmethod
-	def update(playlist_entry, *, preceding_entry_id=None, following_entry_id=None):
+	def update(
+		playlist_entry,
+		*,
+		preceding_entry_id=None,
+		following_entry_id=None
+	):
 		"""Build a playlist entry update event.
 
 		Parameters:
 			playlist_id (str): A playlist ID.
+			preceding_entry_id (str, Optional):
+				The playlist entry ID that should precede the added track.
+				``None`` if entry is to be in first position.
+				Default: ``None``
+			following_entry_id (str, Optional):
+				The playlist entry ID that should follow the added track.
+				``None`` if entry is to be in last position.
+				Default: ``None``
 
 		Returns:
 			dict: A mutation dict.
 		"""
 
 		keys = {
-			'clientId', 'deleted', 'id', 'lastModifiedTimestamp',
-			'playlistId', 'source', 'trackId'
+			'clientId',
+			'deleted',
+			'id',
+			'lastModifiedTimestamp',
+			'playlistId',
+			'source',
+			'trackId',
 		}
 
-		entry = {k: v for k, v in playlist_entry.items() if k in keys}
+		entry = {
+			k: v
+			for k, v in playlist_entry.items()
+			if k in keys
+		}
 		entry['creationTimestamp'] = -1
 
 		if preceding_entry_id is not None:
@@ -709,13 +782,19 @@ class PlaylistEntriesShared(MobileClientCall):
 	"""Get a listing of shared playlist entries.
 
 	Note:
-		The shared playlist entries list is paged. Getting all shared playlist entries will require looping through all pages.
+		The shared playlist entries list is paged.
+		Getting all shared playlist entries will require looping through all pages.
 
 	Parameters:
-		max_results (int, Optional): The maximum number of results on returned page.
+		max_results (int, Optional):
+			The maximum number of results on returned page.
 			Default: ``250``
-		start_token (str, Optional): The token of the page to return. Default: Not sent to get first page.
-		updated_min (int, Optional): List changes since the given Unix epoch time in microseconds.
+		start_token (str, Optional):
+			The token of the page to return.
+			Default: Not sent to get first page.
+		updated_min (int, Optional):
+			List changes since the given Unix epoch time in microseconds.
+			Default lists all changes.
 
 	Attributes:
 		endpoint: ``plentries/shared``
@@ -746,7 +825,7 @@ class PlaylistEntriesShared(MobileClientCall):
 					'maxResults': self.max_results,
 					'shareToken': share_token,
 					'startToken': self.start_token,
-					'updatedMin': self.updated_min
+					'updatedMin': self.updated_min,
 				}
 			)
 
@@ -756,13 +835,19 @@ class PlaylistEntryFeed(MobileClientFeedCall):
 	"""Get a listing of user playlist entries.
 
 	Note:
-		The playlist entry list is paged. Getting all playlist entries will require looping through all pages.
+		The playlist entry list is paged.
+		Getting all playlist entries will require looping through all pages.
 
 	Parameters:
-		max_results (int, Optional): The maximum number of results on returned page.
+		max_results (int, Optional):
+			The maximum number of results on returned page.
 			Default: ``250``
-		start_token (str, Optional): The token of the page to return. Default: Not sent to get first page.
-		updated_min (int, Optional): List changes since the given Unix epoch time in microseconds.
+		start_token (str, Optional):
+			The token of the page to return.
+			Default: Not sent to get first page.
+		updated_min (int, Optional):
+			List changes since the given Unix epoch time in microseconds.
+			Default lists all changes.
 
 	Attributes:
 		endpoint: ``plentryfeed``
@@ -782,13 +867,19 @@ class PlaylistFeed(MobileClientFeedCall):
 	"""Get a listing of library playlists.
 
 	Note:
-		The playlist list is paged. Getting all playlists will require looping through all pages.
+		The playlist list is paged.
+		Getting all playlists will require looping through all pages.
 
 	Parameters:
-		max_results (int, Optional): The maximum number of results on returned page.
+		max_results (int, Optional):
+			The maximum number of results on returned page.
 			Default: ``250``
-		start_token (str, Optional): The token of the page to return. Default: Not sent to get first page.
-		updated_min (int, Optional): List changes since the given Unix epoch time in microseconds.
+		start_token (str, Optional):
+			The token of the page to return.
+			Default: Not sent to get first page.
+		updated_min (int, Optional):
+			List changes since the given Unix epoch time in microseconds.
+			Default lists all changes.
 
 	Attributes:
 		endpoint: ``playlistfeed``
@@ -825,7 +916,8 @@ class PlaylistsCreate(Playlists):
 	Parameters:
 		name (str): Name to give the playlist.
 		description (str): Description to give the playlist.
-		public (bool): If ``True`` and account has a subscription, make playlist public.
+		public (bool):
+			If ``True`` and account has a subscription, make playlist public.
 			Default: ``False``
 
 	Attributes:
@@ -845,15 +937,17 @@ class PlaylistsCreate(Playlists):
 
 		timestamp = int(time.time() * 1000000)
 
-		self._data.update({
-			'creationTimestamp': timestamp,
-			'deleted': False,
-			'description': self.description,
-			'lastModifiedTimestamp': timestamp,
-			'name': self.name,
-			'shareState': 'PUBLIC' if self.public else 'PRIVATE',
-			'type': 'USER_GENERATED'
-		})
+		self._data.update(
+			{
+				'creationTimestamp': timestamp,
+				'deleted': False,
+				'description': self.description,
+				'lastModifiedTimestamp': timestamp,
+				'name': self.name,
+				'shareState': 'PUBLIC' if self.public else 'PRIVATE',
+				'type': 'USER_GENERATED',
+			}
+		)
 
 
 @attrs(slots=True)
@@ -902,15 +996,17 @@ class PlaylistsUpdate(Playlists):
 
 		timestamp = int(time.time() * 1000000)
 
-		self._data.update({
-			'creationTimestamp': timestamp,
-			'deleted': False,
-			'description': self.description,
-			'lastModifiedTimestamp': timestamp,
-			'name': self.name,
-			'shareState': 'PUBLIC' if self.public else 'PRIVATE',
-			'type': 'USER_GENERATED'
-		})
+		self._data.update(
+			{
+				'creationTimestamp': timestamp,
+				'deleted': False,
+				'description': self.description,
+				'lastModifiedTimestamp': timestamp,
+				'name': self.name,
+				'shareState': 'PUBLIC' if self.public else 'PRIVATE',
+				'type': 'USER_GENERATED',
+			}
+		)
 
 
 @attrs(slots=True)
@@ -918,7 +1014,8 @@ class PodcastBrowse(MobileClientCall):
 	"""Get a listing of podcasts from Podcasts browse tab.
 
 	Parameters:
-		podcast_genre_id (str, Optional): A podcast genre ID as found in :class:`PodcastBrowseHierarchy`.
+		podcast_genre_id (str, Optional):
+			A podcast genre ID as found in :class:`PodcastBrowseHierarchy`.
 			Default: ``'JZCpodcasttopchartall'``
 
 	Attributes:
@@ -957,14 +1054,20 @@ class PodcastEpisode(MobileClientCall):
 	"""Retrieve list of episodes from user-subscribed podcast series.
 
 	Note:
-		The podcast episode list is paged. Getting all podcast episodes will require looping through all pages.
+		The podcast episode list is paged.
+		Getting all podcast episodes will require looping through all pages.
 
 	Parameters:
 		device_id (str): A mobile device ID.
-		max_results (int, Optional): The maximum number of results on returned page.
+		max_results (int, Optional):
+			The maximum number of results on returned page.
 			Default: ``250``
-		start_token (str, Optional): The token of the page to return. Default: Not sent to get first page.
-		updated_min (int, Optional): List changes since the given Unix epoch time in microseconds.
+		start_token (str, Optional):
+			The token of the page to return.
+			Default: Not sent to get first page.
+		updated_min (int, Optional):
+			List changes since the given Unix epoch time in microseconds.
+			Default lists all changes.
 
 	Attributes:
 		endpoint: ``podcastepisode``
@@ -984,15 +1087,15 @@ class PodcastEpisode(MobileClientCall):
 		super().__attrs_post_init__()
 
 		if self.device_id:
-			self._headers.update({
-				'X-Device-ID': self.device_id
-			})
+			self._headers.update({'X-Device-ID': self.device_id})
 
-		self._params.update({
-			'max-results': self.max_results,
-			'start-token': self.start_token,
-			'updated-min': self.updated_min
-		})
+		self._params.update(
+			{
+				'max-results': self.max_results,
+				'start-token': self.start_token,
+				'updated-min': self.updated_min,
+			}
+		)
 
 
 @attrs(slots=True)
@@ -1002,7 +1105,12 @@ class PodcastEpisodeStreamURL(MobileClientStreamCall):
 	Parameters:
 		podcast_episode_id (str): A podcast episode ID.
 		device_id (str): A mobile device ID.
-		quality (str, Optional): Stream quality is one of ``'hi'`` (320Kbps), ``'med'`` (160Kbps), or ``'low'`` (128Kbps).
+		quality (str, Optional):
+			Stream quality is one of:
+				- ``'hi'`` (320Kbps)
+				- ``'med'`` (160Kbps)
+				- ``'low'`` (128Kbps)
+
 			Default: ``'hi'``
 	"""
 
@@ -1013,7 +1121,9 @@ class PodcastEpisodeStreamURL(MobileClientStreamCall):
 	device_id = attrib(default=None)
 
 	def __attrs_post_init__(self):
-		super().__attrs_post_init__(self.podcast_episode_id, quality=self.quality, device_id=self.device_id)
+		super().__attrs_post_init__(
+			self.podcast_episode_id, quality=self.quality, device_id=self.device_id
+		)
 
 		self._params['mjck'] = self.podcast_episode_id
 
@@ -1068,14 +1178,20 @@ class PodcastSeries(MobileClientCall):
 	"""Retrieve list of user-subscribed podcast series.
 
 	Note:
-		The podcast series list is paged. Getting all podcast series will require looping through all pages.
+		The podcast series list is paged.
+		Getting all podcast series will require looping through all pages.
 
 	Parameters:
 		device_id (str): A mobile device ID.
-		max_results (int, Optional): The maximum number of results on returned page.
+		max_results (int, Optional):
+			The maximum number of results on returned page.
 			Default: ``250``
-		start_token (str, Optional): The token of the page to return. Default: Not sent to get first page.
-		updated_min (int, Optional): List changes since the given Unix epoch time in microseconds.
+		start_token (str, Optional):
+			The token of the page to return.
+			Default: Not sent to get first page.
+		updated_min (int, Optional):
+			List changes since the given Unix epoch time in microseconds.
+			Default lists all changes.
 
 	Attributes:
 		endpoint: ``podcastseries``
@@ -1095,15 +1211,17 @@ class PodcastSeries(MobileClientCall):
 		super().__attrs_post_init__()
 
 		if self.device_id:
-			self._headers.update({
-				'X-Device-ID': self.device_id
-			})
+			self._headers.update(
+				{'X-Device-ID': self.device_id}
+			)
 
-		self._params.update({
-			'max-results': self.max_results,
-			'start-token': self.start_token,
-			'updated-min': self.updated_min
-		})
+		self._params.update(
+			{
+				'max-results': self.max_results,
+				'start-token': self.start_token,
+				'updated-min': self.updated_min,
+			}
+		)
 
 
 # TODO: Implement.
@@ -1134,12 +1252,21 @@ class Query(MobileClientCall):
 
 	Parameters:
 		query (str): Search text.
-		max_results (int): Maximum number of results per type to retrieve.
+		max_results (int, Optional):
+			Maximum number of results per type to retrieve.
 			Google only acepts values up to 100.
-			Setting to ``None`` allows up to 1000 results per type but won't return playlist results.
 			Default: ``100``
-		kwargs (bool, Optional): Any of ``albums``, ``artists``, ``genres``, ``playlists``,
-			``podcasts``, ``situations``, ``songs``, ``stations``, ``videos``
+		kwargs (bool, Optional): Any of:
+				- ``albums``
+				- ``artists``
+				- ``genres``
+				- ``playlists``,
+				- ``podcasts``
+				- ``situations``
+				- ``songs``
+				- ``stations``
+				- ``videos``
+
 			set to ``True`` will include that result type in the response.
 			Setting none of them will include all result types in the response.
 
@@ -1167,12 +1294,14 @@ class Query(MobileClientCall):
 				for type_ in kwargs
 			)
 
-		self._params.update({
-			'ct': query_types,
-			'ic': True,  # Setting to False or not including this returns old format which stopped including playlists.
-			'max-results': max_results,
-			'q': query
-		})
+		self._params.update(
+			{
+				'ct': query_types,
+				'ic': True,  # Setting to False or not including this returns old format which stopped including playlists.
+				'max-results': max_results,
+				'q': query,
+			}
+		)
 
 
 @attrs(slots=True)
@@ -1217,13 +1346,19 @@ class RadioStation(MobileClientFeedCall):
 	"""Generate a listing of stations.
 
 	Note:
-		The station list is paged. Getting all stations will require looping through all pages.
+		The station list is paged.
+		Getting all stations will require looping through all pages.
 
 	Parameters:
-		max_results (int, Optional): The maximum number of results on returned page.
+		max_results (int, Optional):
+			The maximum number of results on returned page.
 			Default: ``250``
-		start_token (str, Optional): The token of the page to return. Default: Not sent to get first page.
-		updated_min (int, Optional): List changes since the given Unix epoch time in microseconds.
+		start_token (str, Optional):
+			The token of the page to return.
+			Default: Not sent to get first page.
+		updated_min (int, Optional):
+			List changes since the given Unix epoch time in microseconds.
+			Default lists all changes.
 
 	Attributes:
 		endpoint: ``radio/station``
@@ -1247,23 +1382,42 @@ class RadioStationFeed(MobileClientCall):
 	"""Generate stations and get tracks from station(s).
 
 	Parameters:
-		station_infos (list): A list of station dicts containing keys:
-			``'station_id'`` or ``'seed'``, ``'num_entries'``, ``'library_content_only'``, ``'recently_played'``.
+		station_infos (list):
+			A list of station dicts containing keys:
+				- ``'station_id'`` or ``'seed'``
+				- ``'num_entries'``
+				- ``'library_content_only'``
+				- ``'recently_played'``
 
 			``station_id`` is a station ID.
 
 			``'seed'`` is a dict containing a seed ID and seed type (``'seedType'``).
-				A seed ID can be: ``artistId``, ``albumId``, ``genreId``, ``trackId`` (store track), ``trackLockerId`` (library track).
-				See :data:`~google_music_proto.mobileclient.types.StationSeedType` for seed type values.
+			See :data:`~google_music_proto.mobileclient.types.StationSeedType`
+			for seed type values.
+
+			A seed ID can be:
+				- ``artistId``
+				- ``albumId``
+				- ``genreId``
+				- ``trackId`` (store track)
+				- ``trackLockerId`` (library track)
 
 			``num_entries`` is the maximum number of tracks to return from the station.
 
-			``library_content_only`` when True limits the station to library tracks. Default: ``False``
+			``library_content_only`` when True limits the station to library tracks.
+			Default: ``False``
 
-			``recently_played`` is a list of dicts in the form of {'id': '', 'type'} where ``id`` is a track ID and
-				``type`` is 0 for a library track and 1 for a store track.
-		num_entries (int): The total number of tracks to return. Default: ``25``
-		num_stations (int): The number of stations to return when no station_infos is provided. Default: ``4``
+			``recently_played`` is a list of dicts
+			in the form of {'id': '', 'type'} where
+			``id`` is a track ID and
+			``type`` is 0 for a library track and 1 for a store track.
+
+		num_entries (int):
+			The total number of tracks to return.
+			Default: ``25``
+		num_stations (int):
+			The number of stations to return when no station_infos is provided.
+			Default: ``4``
 
 	Attributes:
 		endpoint: ``radio/stationfeed``
@@ -1283,38 +1437,51 @@ class RadioStationFeed(MobileClientCall):
 	def __attrs_post_init__(self):
 		super().__attrs_post_init__()
 
-		self._data.update({
-			'contentFilter': 1,
-			'stations': []
-		})
+		self._data.update(
+			{
+				'contentFilter': 1,
+				'stations': [],
+			}
+		)
 
 		if self.station_infos is None:
 			self._data.update(
 				mixes={
 					'numEntries': self.num_entries,
-					'numSeeds': self.num_stations
+					'numSeeds': self.num_stations,
 				}
 			)
 		else:
 			for station_info in self.station_infos:
-				if ('station_id' in station_info) and (station_info['station_id'] == 'IFL'):
+				if (
+					'station_id' in station_info
+					and station_info['station_id'] == 'IFL'
+				):
 					del station_info['station_id']
 					station_info['seed'] = {'seedType': 6}
 
 				if 'station_id' in station_info:
-					self._data['stations'].append({
-						'libraryContentOnly': station_info.get('libraryContentOnly', False),
-						'numEntries': station_info.get('num_entries', 25),
-						'radioId': station_info['station_id'],
-						'recentlyPlayed': station_info.get('recently_played', [])
-					})
+					self._data['stations'].append(
+						{
+							'libraryContentOnly': station_info.get(
+								'libraryContentOnly', False
+							),
+							'numEntries': station_info.get('num_entries', 25),
+							'radioId': station_info['station_id'],
+							'recentlyPlayed': station_info.get('recently_played', []),
+						}
+					)
 				elif 'seed' in station_info:
-					self._data['stations'].append({
-						'libraryContentOnly': station_info.get('library_content_only', False),
-						'numEntries': station_info.get('num_entries', 25),
-						'seed': station_info['seed'],
-						'recentlyPlayed': station_info.get('recently_played', [])
-					})
+					self._data['stations'].append(
+						{
+							'libraryContentOnly': station_info.get(
+								'library_content_only', False
+							),
+							'numEntries': station_info.get('num_entries', 25),
+							'seed': station_info['seed'],
+							'recentlyPlayed': station_info.get('recently_played', []),
+						}
+					)
 
 
 @attrs(slots=True)
@@ -1324,13 +1491,21 @@ class RadioStationTrackStreamURL(MobileClientStreamCall):
 	Note:
 		Subscribed accounts should use :class:`TrackStreamURL`.
 
-		Unlike the other stream calls, this returns JSON with a 'url' key, not the location in headers.
+		Unlike the other stream calls,
+		this returns JSON with a 'url' key,
+		not the location in headers.
 
 	Parameters:
 		track_id (str): A station track ID.
 		wentry_id (str): The ``wentryid`` from a station track dict.
-		session_token (str): The ``sessionToken`` from a :class:`RadioStationFeed` response.
-		quality (str, Optional): Stream quality is one of ``'hi'`` (320Kbps), ``'med'`` (160Kbps), or ``'low'`` (128Kbps).
+		session_token (str):
+			The ``sessionToken`` from a :class:`RadioStationFeed` response.
+		quality (str, Optional):
+			Stream quality is one of:
+				- ``'hi'`` (320Kbps)
+				- ``'med'`` (160Kbps)
+				- ``'low'`` (128Kbps)
+
 			Default: ``'hi'``
 		device_id (str): A mobile device ID.
 	"""
@@ -1344,9 +1519,11 @@ class RadioStationTrackStreamURL(MobileClientStreamCall):
 	device_id = attrib(default=None)
 
 	def __attrs_post_init__(self):
-		super().__attrs_post_init__(self.track_id, quality=self.quality, device_id=self.device_id)
+		super().__attrs_post_init__(
+			self.track_id, quality=self.quality, device_id=self.device_id
+		)
 
-		del self._headers['X-Device-ID']  #
+		del self._headers['X-Device-ID']
 
 		self._params['sesstok'] = self.session_token
 		self._params['wentryid'] = self.wentry_id
@@ -1365,7 +1542,8 @@ class TrackBatch(MobileClientBatchCall):
 		This previously supported editing most metadata.
 		It now only supports changing ``rating``.
 		However, changing the rating should be done with
-		:class:`ActivityRecord` and :meth:`ActivityRecord.rate` instead.
+		:class:`ActivityRecordRealtime` and
+		:meth:`ActivityRecordRealtime.rate` instead.
 
 	Use :meth:`add` to build track add mutation dicts.
 	Use :meth:`delete` to build track delete mutation dicts.
@@ -1429,13 +1607,19 @@ class TrackFeed(MobileClientFeedCall):
 	"""Get a listing of library tracks.
 
 	Note:
-		The track list is paged. Getting all tracks will require looping through all pages.
+		The track list is paged.
+		Getting all tracks will require looping through all pages.
 
 	Parameters:
-		max_results (int, Optional): The maximum number of results on returned page.
+		max_results (int, Optional):
+			The maximum number of results on returned page.
 			Default: ``250``
-		start_token (str, Optional): The token of the page to return. Default: Not sent to get first page.
-		updated_min (int, Optional): List changes since the given Unix epoch time in microseconds.
+		start_token (str, Optional):
+			The token of the page to return.
+			Default: Not sent to get first page.
+		updated_min (int, Optional):
+			List changes since the given Unix epoch time in microseconds.
+			Default lists all changes.
 
 	Attributes:
 		endpoint: ``trackfeed``
@@ -1455,13 +1639,19 @@ class Tracks(MobileClientCall):
 	"""Get a listing of library tracks.
 
 	Note:
-		The track list is paged. Getting all tracks will require looping through all pages.
+		The track list is paged.
+		Getting all tracks will require looping through all pages.
 
 	Parameters:
-		max_results (int, Optional): The maximum number of results on returned page. Max allowed is ``49995``.
+		max_results (int, Optional):
+			The maximum number of results on returned page. Max allowed is ``49995``.
 			Default: ``1000``
-		start_token (str, Optional): The token of the page to return. Default: ``None`` to get first page.
-		updated_min (int, Optional): List changes since the given Unix epoch time in microseconds.
+		start_token (str, Optional):
+			The token of the page to return.
+			Default: ``None`` to get first page.
+		updated_min (int, Optional):
+			List changes since the given Unix epoch time in microseconds.
+			Default lists all changes.
 
 	Attributes:
 		endpoint: ``tracks``
@@ -1482,10 +1672,12 @@ class Tracks(MobileClientCall):
 		if self.start_token is not None:
 			self._params.update({'start-token': self.start_token})
 
-		self._params.update({
-			'max-results': self.max_results,
-			'updated-min': self.updated_min
-		})
+		self._params.update(
+			{
+				'max-results': self.max_results,
+				'updated-min': self.updated_min,
+			}
+		)
 
 
 @attrs(slots=True)
@@ -1494,9 +1686,15 @@ class TrackStreamURL(MobileClientStreamCall):
 
 	Parameters:
 		device_id (str): A mobile device ID.
-		track_id (str): A library or store track ID.
+		track_id (str):
+			A library or store track ID.
 			A Google Music subscription is required to stream store tracks.
-		quality (str, Optional): Stream quality is one of ``'hi'`` (320Kbps), ``'med'`` (160Kbps), or ``'low'`` (128Kbps).
+		quality (str, Optional):
+			Stream quality is one of:
+				- ``'hi'`` (320Kbps)
+				- ``'med'`` (160Kbps)
+				- ``'low'`` (128Kbps)
+
 			Default: ``'hi'``
 	"""
 
@@ -1507,7 +1705,9 @@ class TrackStreamURL(MobileClientStreamCall):
 	device_id = attrib(default=None)
 
 	def __attrs_post_init__(self):
-		super().__attrs_post_init__(self.track_id, quality=self.quality, device_id=self.device_id)
+		super().__attrs_post_init__(
+			self.track_id, quality=self.quality, device_id=self.device_id
+		)
 
 		if self.track_id.startswith('T'):
 			self._params['mjck'] = self.track_id

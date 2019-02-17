@@ -20,7 +20,8 @@ class ClientState(MusicManagerCall):
 		This provides things like the quota for uploaded songs.
 
 	Parameters:
-		uploader_id (str): A unique ID given as a MAC address.
+		uploader_id (str):
+			A unique ID given as a MAC address.
 			Only one Music Manager client may use a given uploader ID.
 	"""
 
@@ -39,7 +40,8 @@ class Export(Call):
 	"""Download a song from a Google Music library.
 
 	Parameters:
-		uploader_id (str): A unique ID given as a MAC address.
+		uploader_id (str):
+			A unique ID given as a MAC address.
 			Only one Music Manager client may use a given uploader ID.
 		song_id (str): A song ID.
 	"""
@@ -53,7 +55,9 @@ class Export(Call):
 
 	def __attrs_post_init__(self):
 		self._headers = {'X-Device-ID': self.uploader_id}
-		self._params.update({'songid': self.song_id})
+		self._params.update(
+			{'songid': self.song_id}
+		)
 		self._url = Export.base_url
 
 
@@ -62,17 +66,23 @@ class ExportIDs(Call):
 	"""Get a listing of uploaded and purchased library tracks.
 
 	Note:
-		The track list is paged. Getting all tracks will require looping through all pages.
+		The track list is paged.
+		Getting all tracks will require looping through all pages.
 
 	Parameters:
-		uploader_id (str): A unique ID given as a MAC address.
+		uploader_id (str):
+			A unique ID given as a MAC address.
 			Only one Music Manager client may use a given uploader ID.
-		continuation_token (str, Optional): The token of the page to return.
+		continuation_token (str, Optional):
+			The token of the page to return.
 			Default: Not sent to get first page.
-		export_type (int, Optional): The type of tracks to return:
+		export_type (int, Optional):
+			The type of tracks to return:
 			1 for all tracks, 2 for promotional and purchased.
 			Default: ``1``
-		updated_min (int, Optional): List changes since the given Unix epoch time in microseconds.
+		updated_min (int, Optional):
+			List changes since the given Unix epoch time in microseconds.
+			Default lists all changes.
 	"""
 
 	base_url = 'https://music.google.com/music/exportids'
@@ -91,12 +101,16 @@ class ExportIDs(Call):
 		self._data.export_type = self.export_type
 		self._data.updated_min = self.updated_min
 
-		self._headers.update({
-			'Content-Type': 'application/x-google-protobuf',
-			'X-Device-ID': self.uploader_id
-		})
+		self._headers.update(
+			{
+				'Content-Type': 'application/x-google-protobuf',
+				'X-Device-ID': self.uploader_id,
+			}
+		)
 
-		self._params.update({'version': 1})
+		self._params.update(
+			{'version': 1}
+		)
 
 		if self.continuation_token is not None:
 			self._data.continuation_token = self.continuation_token
@@ -121,7 +135,8 @@ class GetJobs(MusicManagerCall):
 	"""Get a listing of pending upload jobs.
 
 	Parameters:
-		uploader_id (str): A unique ID given as a MAC address.
+		uploader_id (str):
+			A unique ID given as a MAC address.
 			Only one Music Manager client may use a given uploader ID.
 	"""
 
@@ -144,9 +159,11 @@ class Metadata(MusicManagerCall):
 	"""Send upload track metadata to Google Music.
 
 	Parameters:
-		uploader_id (str): A unique ID given as a MAC address.
+		uploader_id (str):
+			A unique ID given as a MAC address.
 			Only one Music Manager client may use a given uploader ID.
-		tracks (list): A list of tracks in the form of :class:`locker_pb2.Track`.
+		tracks (list):
+			A list of tracks in the form of :class:`locker_pb2.Track`.
 			Use :meth:`Metadata.get_track_info` to generate locker tracks from audio files.
 	"""
 
@@ -172,7 +189,8 @@ class Metadata(MusicManagerCall):
 		"""Create a locker track from an audio file.
 
 		Parameters:
-			song (os.PathLike or str or audio_metadata.Format): The path to an audio file or an instance of :class:`audio_metadata.Format`.
+			song (os.PathLike or str or audio_metadata.Format):
+				The path to an audio file or an instance of :class:`audio_metadata.Format`.
 
 		Returns:
 			locker_pb2.Track: A locker track of the given audio file.
@@ -217,7 +235,8 @@ class Metadata(MusicManagerCall):
 		track.original_bit_rate = bitrate
 		track.duration_millis = int(metadata.streaminfo.duration * 1000)
 
-		# If 'artist'/'album'/'title' aren't provided, they render as "undefined" in the web interface.
+		# If 'artist'/'album'/'title' aren't provided,
+		# they render as "undefined" in the web interface.
 		# Setting them to empty strings fixes this.
 		if 'artist' in metadata.tags:
 			track.artist = metadata.tags.artist[0]
@@ -292,10 +311,13 @@ class Sample(MusicManagerCall):
 	"""Send samples of audio files to Google Music.
 
 	Parameters:
-		uploader_id (str): A unique ID given as a MAC address.
+		uploader_id (str):
+			A unique ID given as a MAC address.
 			Only one Music Manager client may use a given uploader ID.
-		track_samples (list): A list of track samples in the form of :class:`upload_pb2.TrackSample`.
-			Use :meth:`Sample.generate_sample` to generate a track sample from an audio file.
+		track_samples (list):
+			A list of track samples in the form of :class:`upload_pb2.TrackSample`.
+			Use :meth:`Sample.generate_sample` to generate
+			a track sample from an audio file.
 	"""
 
 	endpoint = 'sample'
@@ -314,20 +336,18 @@ class Sample(MusicManagerCall):
 	# TODO: Improved album art API?
 	@staticmethod
 	def generate_sample(
-		song,
-		track,
-		sample_request,
-		*,
-		external_art=None,
-		no_sample=False
+		song, track, sample_request, *, external_art=None, no_sample=False
 	):
 		"""Generate a track sample from an audio file.
 
 		Parameters:
-			track (locker_pb2.Track): A locker track of the audio file as created by :meth:`Metadata.get_track_info`.
+			track (locker_pb2.Track):
+				A locker track of the audio file as created by :meth:`Metadata.get_track_info`.
 			sample_request (upload_pb2.SignedChallengeInfo):
-				The ``'signed_challenge_info'`` portion for the audio file from the :class:`Metadata` response.
-			external_art(bytes, Optional): The binary data of an external album art image.
+				The ``'signed_challenge_info'`` portion for the
+				audio file from the :class:`Metadata` response.
+			external_art(bytes, Optional):
+				The binary data of an external album art image.
 				If not provided, embedded album art will be used, if present.
 			no_sample(bool, Optional):
 				Don't generate an audio sample from song;
@@ -347,7 +367,7 @@ class Sample(MusicManagerCall):
 					song,
 					slice_start=sample_request.challenge_info.start_millis // 1000,
 					slice_duration=sample_request.challenge_info.duration_millis // 1000,
-					quality='128k'
+					quality='128k',
 				)
 
 			album_art = external_art or get_album_art(song)
@@ -372,16 +392,24 @@ class ScottyAgentPost(JSONCall):
 	"""Request an upload URL for a track from Google Music.
 
 	Parameters:
-		uploader_id (str): A unique ID given as a MAC address.
+		uploader_id (str):
+			A unique ID given as a MAC address.
 			Only one Music Manager client may use a given uploader ID.
-		server_track_id (str): The server ID of the audio file to upload as given in the response of :class:`Metadata` or :class:`Sample`.
-		track (locker_pb2.Track): A locker track of the audio file as created by :meth:`Metadata.get_track_info`.
-		song (os.PathLike or str or audio_metadata.Format): The path to an audio file or an instance of :class:`audio_metadata.Format`.
-		external_art(bytes, Optional): The binary data of an external album art image.
+		server_track_id (str):
+			The server ID of the audio file to upload as given
+			in the response of :class:`Metadata` or :class:`Sample`.
+		track (locker_pb2.Track):
+			A locker track of the audio file as created by :meth:`Metadata.get_track_info`.
+		song (os.PathLike or str or audio_metadata.Format):
+			The path to an audio file or an instance of :class:`audio_metadata.Format`.
+		external_art(bytes, Optional):
+			The binary data of an external album art image.
 			If not provided, embedded album art will be used, if present.
-		total_song_count (int, Optional): Total number of songs to be uploaded in this session.
+		total_song_count (int, Optional):
+			Total number of songs to be uploaded in this session.
 			Default: 1
-		total_uploaded_count (int, Optional): Number of songs uploaded in this session.
+		total_uploaded_count (int, Optional):
+			Number of songs uploaded in this session.
 			Default: 0
 	"""
 
@@ -410,7 +438,7 @@ class ScottyAgentPost(JSONCall):
 			'SyncNow': 'true',
 			'TrackBitRate': str(self.track.original_bit_rate),
 			'TrackDoNotRematch': 'false',
-			'UploaderId': self.uploader_id
+			'UploaderId': self.uploader_id,
 		}
 
 		if not isinstance(self.song, audio_metadata.Format):
@@ -421,32 +449,34 @@ class ScottyAgentPost(JSONCall):
 		if album_art:
 			inlined['AlbumArt'] = b64encode(album_art).decode()
 
-		self._data.update({
-			'clientId': 'Jumper Uploader',
-			'createSessionRequest': {
-				'fields': [
-					{
-						'external': {
-							'filename': os.path.basename(self.song.filepath),
-							'name': os.path.abspath(self.song.filepath),
-							'put': {},
-							# Size seems to be sent when uploading MP3, but not FLAC.
-							# In fact, uploading FLAC directly fails when this is given.
-							# Leaving it out works for everything.
-							# 'size': self.track.estimated_size
+		self._data.update(
+			{
+				'clientId': 'Jumper Uploader',
+				'createSessionRequest': {
+					'fields': [
+						{
+							'external': {
+								'filename': os.path.basename(self.song.filepath),
+								'name': os.path.abspath(self.song.filepath),
+								'put': {},
+								# Size seems to be sent when uploading MP3, but not FLAC.
+								# In fact, uploading FLAC directly fails when this is given.
+								# Leaving it out works for everything.
+								# 'size': self.track.estimated_size
+							}
 						}
-					}
-				]
-			},
-			'protocolVersion': '0.8'
-		})
+					]
+				},
+				'protocolVersion': '0.8',
+			}
+		)
 
 		for field, value in inlined.items():
 			self._data['createSessionRequest']['fields'].append(
 				{
 					'inlined': {
 						'content': value,
-						'name': field
+						'name': field,
 					}
 				}
 			)
@@ -459,9 +489,13 @@ class ScottyAgentPut(Call):
 	"""Upload a file to a Google Music library.
 
 	Parameters:
-		upload_url (str): The upload URL given by :class:`ScottyAgentPost` response.
-		audio_file (os.PathLike or str or bytes): An audio file as :class:`os.PathLike`, a file/bytes-like object, or binary data.
-		content_type (str): The mime type to be sent in the ContentType header field.
+		upload_url (str):
+			The upload URL given by :class:`ScottyAgentPost` response.
+		audio_file (os.PathLike or str or bytes):
+			An audio file as :class:`os.PathLike`,
+			a file/bytes-like object, or binary data.
+		content_type (str):
+			The mime type to be sent in the ContentType header field.
 			Default: ``'audio/mpeg'``
 	"""
 
@@ -480,7 +514,9 @@ class ScottyAgentPut(Call):
 		elif isinstance(self.audio_file, bytes):
 			self._data = self.audio_file
 		else:
-			raise ValueError("'audio_file' must be os.PathLike, filepath string, a file/bytes-like object, or binary data.")
+			raise ValueError(
+				"'audio_file' must be os.PathLike, filepath string, a file/bytes-like object, or binary data."
+			)
 
 		self._headers.update({'ContentType': self.content_type})
 		self._url = self.upload_url
@@ -493,9 +529,11 @@ class UpAuth(MusicManagerCall):
 	"""Authenticate device as a Music Manager uploader.
 
 	Parameters:
-		uploader_id (str): A unique ID given as a MAC address.
+		uploader_id (str):
+			A unique ID given as a MAC address.
 			Only one Music Manager client may use a given uploader ID.
-		uploader_name (str): The name given to the device in the Google Music device listing.
+		uploader_name (str):
+			The name given to the device in the Google Music device listing.
 	"""
 
 	endpoint = 'upauth'
@@ -512,7 +550,10 @@ class UpAuth(MusicManagerCall):
 
 	@staticmethod
 	def check_success(response):
-		return response.HasField('auth_status') and response.auth_status == upload_pb2.UploadResponse.OK
+		return (
+			response.HasField('auth_status')
+			and response.auth_status == upload_pb2.UploadResponse.OK
+		)
 
 
 @attrs(slots=True)
