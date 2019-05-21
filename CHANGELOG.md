@@ -11,8 +11,9 @@ This project adheres to [Semantic Versioning](https://semver.org).
 ### Added
 
 * Ability to subscribe to public playlists using
-  ``PlaylistBatch`` with ``PlaylistBatch.create``.
-  Unsubscribing is the same as deleting a user playlist.
+	``PlaylistBatch`` with ``PlaylistBatch.create``.
+	Unsubscribing is the same as deleting a user playlist.
+
 ### Fixed
 
 * Handle unsupported and invalid dates when getting track info.
@@ -47,7 +48,7 @@ This project adheres to [Semantic Versioning](https://semver.org).
 ### Added
 
 * ``no_sample`` parameter to ``Sample.generate_sample`` for
-  sending empty audio sample to avoid ffmpeg/avconv dependency.
+	sending empty audio sample to avoid ffmpeg/avconv dependency.
 
 ### Fixed
 
@@ -107,9 +108,9 @@ This project adheres to [Semantic Versioning](https://semver.org).
 ### Changed
 
 * Batch calls now use staticmethods to build the events/mutations.
-  See the docs for each call's methods.
-  The events/mutations are passed to the batch call class.
-  This allows for multiple and different types of and operations to be done in one call.
+	See the docs for each call's methods.
+	The events/mutations are passed to the batch call class.
+	This allows for multiple and different types of and operations to be done in one call.
 
 ### Removed
 
