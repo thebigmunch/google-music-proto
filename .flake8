@@ -10,4 +10,5 @@ exclude =
 	*_pb2.py
 enable-plugins =
 	builtins
+	comprehensions
 	import_order
