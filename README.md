@@ -2,6 +2,7 @@
 
 [![PyPI](https://img.shields.io/pypi/v/google-music-proto.svg?label=PyPI)](https://pypi.org/project/google-music-proto/)
 ![](https://img.shields.io/badge/Python-3.6%2B-blue.svg)  
+[![Travis](https://img.shields.io/travis/thebigmunch/google-music-proto.svg?label=Travis)](https://travis-ci.org/thebigmunch/google-music-proto)  
 [![Docs - Stable](https://img.shields.io/readthedocs/google-music-proto/stable.svg?label=Docs%20%28Stable%29)](https://google-music-proto.readthedocs.io/en/stable/)
 [![Docs - Latest](https://img.shields.io/readthedocs/google-music-proto/latest.svg?label=Docs%20%28Latest%29)](https://google-music-proto.readthedocs.io/en/latest/)
 
