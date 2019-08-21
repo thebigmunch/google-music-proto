@@ -281,22 +281,34 @@ class Metadata(MusicManagerCall):
 		if 'discnumber' in metadata.tags:
 			disc_split = metadata.tags.discnumber[0].split('/')
 
-			track.disc_number = int(disc_split[0])
-			if len(disc_split) == 2:
-				track.total_disc_count = int(disc_split[1])
+			try:
+				track.disc_number = int(disc_split[0])
+				if len(disc_split) == 2:
+					track.total_disc_count = int(disc_split[1])
+			except ValueError:
+				pass
 
 		if 'disctotal' in metadata.tags:
-			track.total_disc_count = int(metadata.tags.disctotal[0])
+			try:
+				track.total_disc_count = int(metadata.tags.disctotal[0])
+			except ValueError:
+				pass
 
 		if 'tracknumber' in metadata.tags:
 			track_split = metadata.tags.tracknumber[0].split('/')
 
-			track.track_number = int(track_split[0])
-			if len(track_split) == 2:
-				track.total_track_count = int(track_split[1])
+			try:
+				track.track_number = int(track_split[0])
+				if len(track_split) == 2:
+					track.total_track_count = int(track_split[1])
+			except ValueError:
+				pass
 
 		if 'tracktotal' in metadata.tags:
-			track.total_track_count = int(metadata.tags.tracktotal[0])
+			try:
+				track.total_track_count = int(metadata.tags.tracktotal[0])
+			except ValueError:
+				pass
 
 		# The track protobuf message supports an additional metadata list field.
 		# ALBUM_ART_HASH has been observed being sent in this field so far.
