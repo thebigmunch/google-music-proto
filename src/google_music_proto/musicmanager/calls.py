@@ -534,6 +534,9 @@ class ScottyAgentPut(Call):
 				"'audio_file' must be os.PathLike, filepath string, a file/bytes-like object, or binary data."
 			)
 
+		if len(self._data) >= 300 * 1024 * 1024:
+			raise ValueError("Maximum allowed file size is 300 MiB.")
+
 		self._headers.update({'ContentType': self.content_type})
 		self._url = self.upload_url
 
