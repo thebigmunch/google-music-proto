@@ -12,14 +12,14 @@ ON_TRAVIS = 'TRAVIS' in os.environ
 
 @nox.session(python=py37)
 def lint(session):
-	session.install('.[lint]')
+	session.install('-U', '.[lint]')
 	session.run('flake8', 'src/')
 
 
 @nox.session(python=py37)
 def doc(session):
 	shutil.rmtree('docs/_build', ignore_errors=True)
-	session.install('.[doc]')
+	session.install('-U', '.[doc]')
 	session.cd('docs')
 	session.run(
 		'sphinx-build',
