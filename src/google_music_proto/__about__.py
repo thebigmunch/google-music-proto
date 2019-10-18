@@ -14,7 +14,7 @@ __title__ = 'google-music-proto'
 __summary__ = 'Sans-I/O wrapper of Google Music API calls.'
 __url__ = 'https://github.com/thebigmunch/google-music-proto'
 
-__version__ = '2.5.0'
+__version__ = '2.5.1'
 __version_info__ = tuple(int(i) for i in __version__.split('.') if i.isdigit())
 
 __author__ = 'thebigmunch'
