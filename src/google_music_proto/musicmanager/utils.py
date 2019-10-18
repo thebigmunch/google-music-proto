@@ -23,6 +23,31 @@ def generate_client_id(song):
 	md5sum = None
 	if isinstance(song, audio_metadata.FLAC):
 		md5sum = unhexlify(song.streaminfo.md5)
+	elif isinstance(song, audio_metadata.MP3):
+		m = md5()
+
+		if '_id3' in song and isinstance(song._id3, audio_metadata.ID3v2):
+			audio_start = song._id3._size
+		else:
+			audio_start = 0
+
+		audio_size = song.streaminfo._end - audio_start
+
+		with open(song.filepath, 'rb') as f:
+			f.seek(audio_start, os.SEEK_SET)
+
+			# Speed up by reading in chunks
+			read = 0
+			while True:
+				read_size = min(audio_size - read, 65536)
+				if read_size <= 0:
+					break
+
+				read += read_size
+				data = f.read(read_size)
+				m.update(data)
+
+		md5sum = m.digest()
 	else:
 		m = md5()
 
@@ -34,7 +59,7 @@ def generate_client_id(song):
 			read = 0
 			while True:
 				read_size = min(audio_size - read, 65536)
-				if not read_size:
+				if read_size <= 0:
 					break
 
 				read += read_size

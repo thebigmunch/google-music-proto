@@ -12,6 +12,9 @@ This project adheres to [Semantic Versioning](https://semver.org).
 
 * Use try/except for track/disc number conversions.
 * Add check for files above maximum allowed upload size.
+* Properly calculate client ID for MP3s that don't
+  have an MPEG frame at the start of the file or
+	immediately following an ID3v2 tag.
 
 
 ## [2.5.0](https://github.com/thebigmunch/google-music-proto/releases/tag/2.5.0) (2019-07-22)
