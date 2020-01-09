@@ -1709,7 +1709,7 @@ class TrackStreamURL(MobileClientStreamCall):
 			self.track_id, quality=self.quality, device_id=self.device_id
 		)
 
-		if self.track_id.startswith('T'):
+		if self.track_id.startswith(('T', 'D')):
 			self._params['mjck'] = self.track_id
 		else:
 			self._params['songid'] = self.track_id

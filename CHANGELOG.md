@@ -11,6 +11,7 @@ This project adheres to [Semantic Versioning](https://semver.org).
 ### Fixed
 
 * Param name for ``MobileClientStreamCall``.
+* Use correct param name for streaming podcast episodes
 
 
 ## [2.5.1](https://github.com/thebigmunch/google-music-proto/releases/tag/2.5.1) (2019-10-18)
