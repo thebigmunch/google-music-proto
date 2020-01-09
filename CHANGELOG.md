@@ -8,6 +8,10 @@ This project adheres to [Semantic Versioning](https://semver.org).
 
 [Commits](https://github.com/thebigmunch/google-music-proto/compare/2.5.1...master)
 
+### Fixed
+
+* Param name for ``MobileClientStreamCall``.
+
 
 ## [2.5.1](https://github.com/thebigmunch/google-music-proto/releases/tag/2.5.1) (2019-10-18)
 

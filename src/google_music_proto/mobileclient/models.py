@@ -104,7 +104,7 @@ class MobileClientStreamCall(Call):
 			{
 				'alt': 'json',
 				'dv': 0,
-				'locale': 'en_US',
+				'hl': 'en_US',
 				'tier': 'fr',
 			}
 		)
