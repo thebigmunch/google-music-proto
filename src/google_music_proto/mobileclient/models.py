@@ -113,20 +113,20 @@ class MobileClientStreamCall(Call):
 		if device_id:
 			self._headers['X-Device-ID'] = device_id
 
-		_s1 = base64.b64decode(
+		s1 = base64.b64decode(
 			b'VzeC4H4h+T2f0VI180nVX8x+Mb5HiTtGnKgH52Otj8ZCGDz9jRWyHb6QXK0JskSiOgzQfwTY5xgLLSdUSreaLVMsVVWfxfa8Rw=='
 		)
-		_s2 = base64.b64decode(
+		s2 = base64.b64decode(
 			b'ZAPnhUkYwQ6y5DdQxWThbvhJHN8msQ1rqJw0ggKdufQjelrKuiGGJI30aswkgCWTDyHkTGK9ynlqTkJ5L4CiGGUabGeo8M6JTQ=='
 		)
 
 		# bitwise and of _s1 and _s2 ascii, converted to string
-		_key = ''.join([chr(c1 ^ c2) for (c1, c2) in zip(_s1, _s2)]).encode("ascii")
-		_mac = hmac.new(_key, item_id.encode("utf-8"), sha1)
-		_salt = str(int(time.time() * 1000))
-		_mac.update(_salt.encode("utf-8"))
+		key = ''.join([chr(c1 ^ c2) for (c1, c2) in zip(s1, s2)]).encode("ascii")
+		mac = hmac.new(key, item_id.encode("utf-8"), sha1)
+		salt = str(int(time.time() * 1000))
+		mac.update(salt.encode("utf-8"))
 
-		_sig = base64.urlsafe_b64encode(_mac.digest())[:-1]
+		sig = base64.urlsafe_b64encode(mac.digest())[:-1]
 
 		self._params.update(
 			{
@@ -134,8 +134,8 @@ class MobileClientStreamCall(Call):
 				'net': 'mob',
 				'opt': quality,
 				'pt': 'e',
-				'sig': _sig,
-				'slt': _salt,
+				'sig': sig,
+				'slt': salt,
 			}
 		)
 
