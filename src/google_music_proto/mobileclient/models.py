@@ -121,12 +121,12 @@ class MobileClientStreamCall(Call):
 		)
 
 		# bitwise and of _s1 and _s2 ascii, converted to string
-		key = ''.join([chr(c1 ^ c2) for (c1, c2) in zip(s1, s2)]).encode("ascii")
-		mac = hmac.new(key, item_id.encode("utf-8"), sha1)
+		key = ''.join([chr(c1 ^ c2) for (c1, c2) in zip(s1, s2)]).encode('ascii')
+		mac = hmac.new(key, item_id.encode('ascii'), sha1)
 		salt = str(int(time.time() * 1000))
-		mac.update(salt.encode("utf-8"))
+		mac.update(salt.encode('ascii'))
 
-		sig = base64.urlsafe_b64encode(mac.digest())[:-1]
+		sig = base64.urlsafe_b64encode(mac.digest())[:-1].decode('ascii')
 
 		self._params.update(
 			{

@@ -7,6 +7,11 @@ This project adheres to [Semantic Versioning](https://semver.org).
 ## [Unreleased](https://github.com/thebigmunch/google-music-proto/tree/master)
 
 [Commits](https://github.com/thebigmunch/google-music-proto/compare/2.5.1...master)
+### Changed
+
+* Decode stream call ``sig`` param to str.
+	HTTP client libraries don't necessarily support bytes param values.
+
 
 ### Fixed
 
