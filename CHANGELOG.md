@@ -6,7 +6,13 @@ This project adheres to [Semantic Versioning](https://semver.org).
 
 ## [Unreleased](https://github.com/thebigmunch/google-music-proto/tree/master)
 
-[Commits](https://github.com/thebigmunch/google-music-proto/compare/2.5.1...master)
+[Commits](https://github.com/thebigmunch/google-music-proto/compare/2.5.2...master)
+
+
+## [2.5.2](https://github.com/thebigmunch/google-music-proto/releases/tag/2.5.2) (2020-01-11)
+
+[Commits](https://github.com/thebigmunch/google-music-proto/compare/2.5.1...2.5.2)
+
 ### Changed
 
 * Decode stream call ``sig`` param to str.
@@ -16,7 +22,7 @@ This project adheres to [Semantic Versioning](https://semver.org).
 ### Fixed
 
 * Param name for ``MobileClientStreamCall``.
-* Use correct param name for streaming podcast episodes
+* Use correct param name for streaming podcast episodes.
 
 
 ## [2.5.1](https://github.com/thebigmunch/google-music-proto/releases/tag/2.5.1) (2019-10-18)
