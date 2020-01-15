@@ -14,8 +14,6 @@ from .models import (
 from .types import QueryResultType, TrackRating
 
 # TODO: Batch call schemas.
-# TODO: Calls: add songs to playlist, reorder playlist songs, plentries.
-# TODO: Situations are now returned through a protobuf call?
 
 
 @attrs(slots=True)
