@@ -60,7 +60,7 @@ def generate_client_id(song):
 
 
 def get_album_art(song):
-	if not isinstance(song, audio_metadata.Format):
+	if not isinstance(song, audio_metadata.Format):  # pragma: nobranch
 		song = audio_metadata.load(song)
 
 	album_art = next(
@@ -75,14 +75,14 @@ def get_album_art(song):
 	return album_art
 
 
-def get_transcoder():
+def get_transcoder(*, path=None):
 	"""Return the path to a transcoder (ffmpeg or avconv) with MP3 support."""
 
 	transcoders = ['ffmpeg', 'avconv']
 	transcoder_details = {}
 
 	for transcoder in transcoders:
-		command_path = shutil.which(transcoder)
+		command_path = shutil.which(transcoder, path=path)
 		if command_path is None:
 			transcoder_details[transcoder] = 'Not installed.'
 			continue
@@ -93,12 +93,13 @@ def get_transcoder():
 			stderr=subprocess.DEVNULL,
 			universal_newlines=True,
 		).stdout
+
 		mp3_encoding_support = (
 			'libmp3lame' in stdout
 			and 'disable-libmp3lame' not in stdout
 		)
+
 		if mp3_encoding_support:
-			transcoder_details[transcoder] = "MP3 encoding support."
 			break
 		else:
 			transcoder_details[transcoder] = "No MP3 encoding support."
