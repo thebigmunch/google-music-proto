@@ -17,56 +17,42 @@ import audio_metadata
 
 # The id is found by: getting md5sum of audio, base64 encode md5sum, removing trailing '='.
 def generate_client_id(song):
-	if not isinstance(song, audio_metadata.Format):
+	def _hash_data(m, f, audio_size):
+		# Speed up by reading in chunks
+		read = 0
+		read_size = min(audio_size - read, 65536)
+		while read_size > 0:
+			data = f.read(read_size)
+			m.update(data)
+
+			read += read_size
+			read_size = min(audio_size - read, 65536)
+
+		return m.digest()
+
+	if not isinstance(song, audio_metadata.Format):  # pragma: nobranch
 		song = audio_metadata.load(song)
 
 	md5sum = None
 	if isinstance(song, audio_metadata.FLAC):
 		md5sum = unhexlify(song.streaminfo.md5)
-	elif isinstance(song, audio_metadata.MP3):
-		m = md5()
-
-		if '_id3' in song and isinstance(song._id3, audio_metadata.ID3v2):
-			audio_start = song._id3._size
-		else:
-			audio_start = 0
-
-		audio_size = song.streaminfo._end - audio_start
-
-		with open(song.filepath, 'rb') as f:
-			f.seek(audio_start, os.SEEK_SET)
-
-			# Speed up by reading in chunks
-			read = 0
-			while True:
-				read_size = min(audio_size - read, 65536)
-				if read_size <= 0:
-					break
-
-				read += read_size
-				data = f.read(read_size)
-				m.update(data)
-
-		md5sum = m.digest()
 	else:
 		m = md5()
+		if isinstance(song, audio_metadata.MP3):
+			if '_id3' in song and isinstance(song._id3, audio_metadata.ID3v2):
+				audio_start = song._id3._size
+			else:
+				audio_start = 0
 
-		audio_size = song.streaminfo._size
-		with open(song.filepath, 'rb') as f:
-			f.seek(song.streaminfo._start)
-
-			# Speed up by reading in chunks
-			read = 0
-			while True:
-				read_size = min(audio_size - read, 65536)
-				if read_size <= 0:
-					break
-
-				read += read_size
-				data = f.read(read_size)
-				m.update(data)
-
-		md5sum = m.digest()
+			audio_size = song.streaminfo._end - audio_start
+			with open(song.filepath, 'rb') as f:
+				f.seek(audio_start, os.SEEK_SET)
+				md5sum = _hash_data(m, f, audio_size)
+		else:
+			audio_size = song.streaminfo._size
+			with open(song.filepath, 'rb') as f:
+				f.seek(song.streaminfo._start)
+				md5sum = _hash_data(m, f, audio_size)
 
 	client_id = b64encode(md5sum).rstrip(b'=').decode('ascii')
 
@@ -119,7 +105,7 @@ def get_transcoder():
 	else:
 		raise ValueError(
 			f"ffmpeg or avconv must be in the path and support mp3 encoding."
-			"\nDetails: {transcoder_details}"
+			f"\nDetails: {transcoder_details}"
 		)
 
 	return command_path
