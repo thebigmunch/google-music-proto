@@ -8,6 +8,11 @@ This project adheres to [Semantic Versioning](https://semver.org).
 
 [Commits](https://github.com/thebigmunch/google-music-proto/compare/2.5.2...master)
 
+### Changed
+
+* Match Google's Music Manager album art selection algorithm.
+	See https://github.com/thebigmunch/google-music-proto/issues/9#issuecomment-581398635.
+
 
 ## [2.5.2](https://github.com/thebigmunch/google-music-proto/releases/tag/2.5.2) (2020-01-11)
 

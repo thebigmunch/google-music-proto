@@ -46,6 +46,18 @@ def test_get_album_art():
 		TEST_FLAC
 	) == get_album_art(
 		TEST_MP3_ID3V2
+	) == get_album_art(
+		TEST_FILES_PATH / 'test-back-cover.mp3'
+	) == get_album_art(
+		TEST_FILES_PATH / 'test-other.mp3'
+	) == get_album_art(
+		TEST_FILES_PATH / 'test-back-cover-other.mp3'
+	) == get_album_art(
+		TEST_FILES_PATH / 'test-other-back-cover.mp3'
+	) == get_album_art(
+		TEST_FILES_PATH / 'test-back-cover-other-front-cover.mp3'
+	) == get_album_art(
+		TEST_FILES_PATH / 'test-front-cover-front-cover.mp3'
 	) == (
 		b'\x89PNG\r\n\x1a\n\x00\x00\x00\r'
 		b'IHDR\x00\x00\x00\x10\x00\x00\x00'

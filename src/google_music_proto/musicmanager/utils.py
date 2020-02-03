@@ -63,14 +63,22 @@ def get_album_art(song):
 	if not isinstance(song, audio_metadata.Format):  # pragma: nobranch
 		song = audio_metadata.load(song)
 
-	album_art = next(
-		(
-			picture.data
-			for picture in song.pictures
-			if picture.type == 3
-		),
-		None
-	)
+	# Google's Music manager uses this album art selection algorithm:
+	# * If picture(s) of type 'front cover' are found, use the first one of those in the list.
+	# * If picture(s) of type 'other' are found, use the first one of those in the list.
+	# * If picture(s) of type 'back cover' are found, use the first one of those in the list.
+	for picture_type in [3, 0, 4]:
+		album_art = next(
+			(
+				picture.data
+				for picture in song.pictures
+				if picture.type == picture_type
+			),
+			None
+		)
+
+		if album_art is not None:
+			break
 
 	return album_art
 
