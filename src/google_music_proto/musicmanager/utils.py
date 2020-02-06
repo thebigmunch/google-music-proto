@@ -151,10 +151,8 @@ def transcode_to_mp3(song, *, slice_start=None, slice_duration=None, quality='32
 	input_ = None
 
 	if isinstance(song, audio_metadata.Format):
-		if hasattr(song.filepath, 'read'):
+		if song.filepath is None:
 			raise ValueError("Audio metadata must be from a file.")
-			# command = [command_path, '-i', '-']
-			# input_ = song.filepath.read()
 		else:
 			command = [command_path, '-i', song.filepath]
 	elif isinstance(song, bytes):
