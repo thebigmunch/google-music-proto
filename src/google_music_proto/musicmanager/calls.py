@@ -205,21 +205,26 @@ class Metadata(MusicManagerCall):
 			raise ValueError(f'Could not read metadata from {song}.') from e
 
 		# TODO: Some might not match (E.g. AAC, ALAC).
-		extension = metadata.__class__.__name__
+		content_type = metadata.__class__.__name__
 
 		# Fake WAV format support.
-		if extension == 'WAV':
-			extension = 'FLAC'
+		if content_type == 'WAV':
+			content_type = 'FLAC'
+		elif content_type in [
+			'OggOpus',
+			'OggVorbis',
+		]:
+			content_type = 'OGG'
 
-		if not hasattr(locker_pb2.Track, extension):
-			raise ValueError(f'{extension} is not a supported filetype.')
+		if not hasattr(locker_pb2.Track, content_type):
+			raise ValueError(f'{content_type} is not a supported file type.')
 
 		# TODO: Can probably fill more fields.
 		track = locker_pb2.Track()
 
 		track.client_id = generate_client_id(metadata)
 
-		track.original_content_type = getattr(locker_pb2.Track, extension)
+		track.original_content_type = getattr(locker_pb2.Track, content_type)
 		track.estimated_size = metadata.filesize
 		try:
 			track.last_modified_timestamp = int(os.path.getmtime(metadata.filepath))

@@ -13,9 +13,16 @@ from binascii import unhexlify
 from hashlib import md5
 
 import audio_metadata
+from tbm_utils import DataReader
 
 
-# The id is found by: getting md5sum of audio, base64 encode md5sum, removing trailing '='.
+# The id is found by getting md5sum of audio, base64 encode md5sum, removing trailing '=', except for FLAC.
+# FLAC: Unhexlify md5sum from stream info block.
+# MP3: Audio starts right after ID3v2 tag if present, else beginning of file.
+# MP3: Audio ends right before ID3v1 tag if present, else end of file.
+# MP4: Audio is the entire 'mdat' atom.
+# Ogg Vorbis: For some reason, Google seems to use the start of the 2nd audio page for client ID generation.
+# Ogg Vorbis: This could actually just be an off-by-one error in their code.
 def generate_client_id(song):
 	def _hash_data(m, f, audio_size):
 		# Speed up by reading in chunks
@@ -48,6 +55,18 @@ def generate_client_id(song):
 			with open(song.filepath, 'rb') as f:
 				f.seek(audio_start, os.SEEK_SET)
 				md5sum = _hash_data(m, f, audio_size)
+		elif isinstance(song, audio_metadata.OggVorbis):
+			f = DataReader(song.filepath)
+			f.seek(song.streaminfo._start)
+
+			while True:
+				page = audio_metadata.OggPage.load(f)
+				if page.position:
+					break
+
+			audio_start = f.tell()
+			audio_size = song.streaminfo._size
+			md5sum = _hash_data(m, f, audio_size)
 		else:
 			audio_size = song.streaminfo._size
 			with open(song.filepath, 'rb') as f:
