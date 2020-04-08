@@ -6,11 +6,17 @@ This project adheres to [Semantic Versioning](https://semver.org).
 
 ## [Unreleased](https://github.com/thebigmunch/google-music-proto/tree/master)
 
-[Commits](https://github.com/thebigmunch/google-music-proto/compare/2.8.0...master)
+[Commits](https://github.com/thebigmunch/google-music-proto/compare/2.9.0...master)
+
+
+## [2.9.0](https://github.com/thebigmunch/google-music-proto/releases/tag/2.9.0) (2020-04-08)
+
+[Commits](https://github.com/thebigmunch/google-music-proto/compare/2.8.0...2.9.0)
 
 ### Changed
 
 * Gracefully handle empty song metadata fields when building track info.
+* Update dependency versions.
 
 
 ## [2.8.0](https://github.com/thebigmunch/google-music-proto/releases/tag/2.8.0) (2020-03-05)
