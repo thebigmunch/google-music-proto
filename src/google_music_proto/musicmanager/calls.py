@@ -207,8 +207,8 @@ class Metadata(MusicManagerCall):
 		# TODO: Some might not match (E.g. AAC, ALAC).
 		content_type = metadata.__class__.__name__
 
-		# Fake WAV format support.
-		if content_type == 'WAV':
+		# Fake WAVE format support.
+		if content_type == 'WAVE':
 			content_type = 'FLAC'
 		elif content_type in [
 			'OggOpus',
