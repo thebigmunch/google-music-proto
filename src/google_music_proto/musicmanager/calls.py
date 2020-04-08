@@ -243,17 +243,26 @@ class Metadata(MusicManagerCall):
 		# If 'artist'/'album'/'title' aren't provided,
 		# they render as "undefined" in the web interface.
 		# Setting them to empty strings fixes this.
-		if 'artist' in metadata.tags:
+		if (
+			'artist' in metadata.tags
+			and metadata.tags.artist
+		):
 			track.artist = metadata.tags.artist[0]
 		else:
 			track.artist = ''
 
-		if 'album' in metadata.tags:
+		if (
+			'album' in metadata.tags
+			and metadata.tags.album
+		):
 			track.album = metadata.tags.album[0]
 		else:
 			track.album = ''
 
-		if 'title' in metadata.tags:
+		if (
+			'title' in metadata.tags
+			and metadata.tags.title
+		):
 			track.title = metadata.tags.title[0]
 		else:
 			try:
@@ -261,16 +270,28 @@ class Metadata(MusicManagerCall):
 			except TypeError:
 				track.title = ''
 
-		if 'albumartist' in metadata.tags:
+		if (
+			'albumartist' in metadata.tags
+			and metadata.tags.albumartist
+		):
 			track.album_artist = metadata.tags.albumartist[0]
 
-		if 'bpm' in metadata.tags:
+		if (
+			'bpm' in metadata.tags
+			and metadata.tags.bpm
+		):
 			track.beats_per_minute = round(float(metadata.tags.bpm[0]))
 
-		if 'composer' in metadata.tags:
+		if (
+			'composer' in metadata.tags
+			and metadata.tags.composer
+		):
 			track.composer = metadata.tags.composer[0]
 
-		if 'date' in metadata.tags:
+		if (
+			'date' in metadata.tags
+			and metadata.tags.date
+		):
 			date = metadata.tags.date[0]
 
 			try:
@@ -280,10 +301,16 @@ class Metadata(MusicManagerCall):
 			else:
 				track.year = year
 
-		if 'genre' in metadata.tags:
+		if (
+			'genre' in metadata.tags
+			and metadata.tags.genre
+		):
 			track.genre = metadata.tags.genre[0]
 
-		if 'discnumber' in metadata.tags:
+		if (
+			'discnumber' in metadata.tags
+			and metadata.tags.discnumber
+		):
 			disc_split = metadata.tags.discnumber[0].split('/')
 
 			try:
@@ -293,13 +320,19 @@ class Metadata(MusicManagerCall):
 			except ValueError:
 				pass
 
-		if 'disctotal' in metadata.tags:
+		if (
+			'disctotal' in metadata.tags
+			and metadata.tags.disctotal
+		):
 			try:
 				track.total_disc_count = int(metadata.tags.disctotal[0])
 			except ValueError:
 				pass
 
-		if 'tracknumber' in metadata.tags:
+		if (
+			'tracknumber' in metadata.tags
+			and metadata.tags.tracknumber
+		):
 			track_split = metadata.tags.tracknumber[0].split('/')
 
 			try:
@@ -309,7 +342,10 @@ class Metadata(MusicManagerCall):
 			except ValueError:
 				pass
 
-		if 'tracktotal' in metadata.tags:
+		if (
+			'tracktotal' in metadata.tags
+			and metadata.tags.tracktotal
+		):
 			try:
 				track.total_track_count = int(metadata.tags.tracktotal[0])
 			except ValueError:
