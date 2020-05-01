@@ -6,7 +6,16 @@ This project adheres to [Semantic Versioning](https://semver.org).
 
 ## [Unreleased](https://github.com/thebigmunch/google-music-proto/tree/master)
 
-[Commits](https://github.com/thebigmunch/google-music-proto/compare/2.9.0...master)
+[Commits](https://github.com/thebigmunch/google-music-proto/compare/2.10.0...master)
+
+
+## [2.10.0](https://github.com/thebigmunch/google-music-proto/releases/tag/2.10.0) (2020-05-01)
+
+[Commits](https://github.com/thebigmunch/google-music-proto/compare/2.9.0...2.10.0)
+
+### Changed
+
+* Revert "Use importlib.metadata to dynamically populate module metadata".
 
 
 ## [2.9.0](https://github.com/thebigmunch/google-music-proto/releases/tag/2.9.0) (2020-04-08)
