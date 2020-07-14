@@ -60,7 +60,7 @@ def generate_client_id(song):
 			f.seek(song.streaminfo._start)
 
 			while True:
-				page = audio_metadata.OggPage.load(f)
+				page = audio_metadata.OggPage.parse(f)
 				if page.position:
 					break
 

@@ -8,6 +8,10 @@ This project adheres to [Semantic Versioning](https://semver.org).
 
 [Commits](https://github.com/thebigmunch/google-music-proto/compare/2.10.0...master)
 
+### Fixed
+
+* Update method name from audio-metadata for newer versions.
+
 
 ## [2.10.0](https://github.com/thebigmunch/google-music-proto/releases/tag/2.10.0) (2020-05-01)
 
