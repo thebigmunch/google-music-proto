@@ -1,6 +1,8 @@
 google-music-proto --- A `sans-I/O <https://sans-io.readthedocs.io/>`_ Google Music API library
 ===============================================================================================
 
+**Due to Google Music shutting down in favor of YouTube Music, this project has ended.**
+
 Getting Started
 ---------------
 
